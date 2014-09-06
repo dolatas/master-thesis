@@ -18,6 +18,9 @@ Algorytm Apriori jest algorytmem eksploracji poziomej. Szuka zbiorów częstych 
 \subsection{Algorytm Apriori - implementacja Christina Borgelta \cite{Borgelt}}
 \label{c322}
 
+
+
+
 \subsection{Algorytm Apriori - implementacja Ferenca Bodona \cite{Bodon}}
 \label{c323}
 
@@ -33,4 +36,5 @@ Zliczenie wystąpień kandyadatów jest realizowane dla wszystkich zapytań jedn
 \subsection{Common Candidate Tree \cite{WojciechowskiCCT}}
 \label{c326}
 Common Candidate Tree podobna do Common Counting. Również korzysta z oryginalnego Apriori i wykorzystuje strukturę drzewa haszowego. Różnica polega na tym, że zwiększony został stopień współbieżności przetwarzania. Uzyskano to dzięki współdzieleniu pamięciowej struktury drzewa składującego kandydatów. Jest to duża zaleta w porównaniu z Common Counting, gdyż - zamiast wielu - tworzone jest jedno drzewo haszowe o niezmiennej strukturze. Poza zachowaniem integracji odczytów współdzielonych możliwa jest integracja testowania czy w danej transakcji zawierają się kandydaci z poszczególnych zapytań. Realizacja tego alogrytmu wymagała rozszerzenia struktury kandydatów. W jej wyniku z każdym kandydatem związany został wektor liczników (jeden licznik dla jednego zapytania), a nie pojedyńczy licznik. Dodatkowo - dla rozróżnienia zapytań, które wygenerowały danego kandydata - dołączony został wektor flag logicznych przechowujący taką właśnie informację. Po wyłonieniu kadydatów są oni umieszczani w jednym zbiorze. Zbiór ten trafia do wspólnego drzewa haszowego. W tym kroku modyfikowane są również odpowiednie falgi. Samo generowanie kandydatów i selekcja zbiorów czestych nadal realizowane sa odrebnie dla poszczególnych zapytań. Zliczany jest natomiast zintegrowany zbiór kandydatów. Podczas tej fazy brani są pod uwagę tylko kandydaci wygenerowani przez zapytania odwołujące się do aktualnie odczytywanej partycji bazy danych i w przypadku gdy kandydat zawiera się w przetwarzanej transakcji, to zwiększa się liczniki kandydatów związne z tymi zapytaniami.
+
 Eksperymenty \cite{WojciechwskiCCT} pokazały, że jest to alogrytm wydajniejszy i lepiej skalowany od Common Counting.
