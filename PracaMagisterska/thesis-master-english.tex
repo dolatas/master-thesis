@@ -1,0 +1,54 @@
+% Szkielet dla pracy pisanej w języku angielskim.
+
+\documentclass[polish,a4paper,twoside]{ppfcmthesis}
+
+\usepackage[utf8]{inputenc}
+\usepackage[OT4]{fontenc}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+
+\author{Szymon Dolata}                              % Your name comes here
+\title{Integracja drzew prefiksowych w przetwarzaniu zbiorów zapytań eksploracyjnych algorytmem Apriori}        % Note how we protect the final title phrase from breaking
+\ppsupervisor{Dr inż. Marek Wojciechowski} % Your supervisor comes here.
+\ppyear{2014}                                         % Year of final submission (not graduation!)
+
+\begin{document}
+
+% Front matter starts here
+\frontmatter\pagestyle{empty}%
+\maketitle\cleardoublepage%
+
+\pagebreak
+
+% Blank info page for "karta dyplomowa"
+\thispagestyle{empty}\vspace*{\fill}%
+\begin{center}Tutaj przychodzi karta pracy dyplomowej;\\oryginał wstawiamy do wersji dla archiwum PP, w pozostałych kopiach wstawiamy ksero.\end{center}%
+\vfill\cleardoublepage%
+
+\pagebreak
+
+% Table of contents.
+\pagenumbering{Roman}\pagestyle{ppfcmthesis}%
+\tableofcontents* \cleardoublepage%
+
+% Main content of your thesis starts here.
+\mainmatter%
+\input{01-Introduction.tex}
+\input{02-Concepts.tex}
+\input{03-Theory.tex}
+\input{04-Solution.tex}
+\input{05-Experiment.tex}
+\input{06-Conclusion.tex}
+
+% All appendices and extra material, if you have any.
+\cleardoublepage\appendix%
+\input{A-Appendix.tex}
+
+% Bibliography (books, articles) starts here.
+\bibliographystyle{alpha}{\raggedright\sloppy\small\bibliography{bibliography}}
+
+% Colophon is a place where you should let others know about copyrights etc.
+\ppcolophon
+
+\end{document}

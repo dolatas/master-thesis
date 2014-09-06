@@ -1,0 +1,34 @@
+\chapter{Podłoże teoretyczne}
+\label{c3}
+
+\section{Wstęp}
+\label{c31}
+Kolejny rozdział przedstawia aktualne metody i istniejące algorytmy związane z tematem pracy. Poza podstawowym algorytmem Apriori (\cite{Agrawal}), który używa drzew haszowych do przechwywania kandydatów, opisano trzy modyfikacje tego alogrytmu. Główna różnica polega na tym, że wykorzystują one inną strukturę, a mianowicie drzewa prefiksowe. Są to rozwiązania zaproponowane przez Christina Borgelta (\cite{Borgelt}), Ferenca Bodona (\cite{Bodon}) oraz Barta Goethalsa (\cite{Goethals}). Ze względu na wykorzystanie prostszej struktury okazały się one szybsze od standardowego algorytmu.
+ 
+Innym problemem jest optymalizacja wykonania kilku zadań Apriori uruchomionych współbieżnie na nakładających się podzbiorach tabeli z danymi. Metody z tym związane to Common Counting (\cite{WojciechowskiCC}) i Common Candidate Tree (\cite{WojciechowskiCCT}). Oparte są one o implementację Apriori z zastosowaniem drzew haszowych. Brakuje jednak adaptacji tych algorytmów, polegającej na zmianie struktury na drzewa prefiksowe. Właśnie taka modyfikacja została wprowadzona, a uzyskane efekty opisano w kolejnych rozdziałach niniejszej pracy. 
+
+
+\section{Przegląd istniejących rozwiązań}
+\label{c32}
+
+\subsection{Algorytm Apriori \cite{Agrawal}}
+\label{c321}
+Algorytm Apriori jest algorytmem eksploracji poziomej. Szuka zbiorów częstych o rozmiarach \(1, 2,\dots , k\). Algorytm rozpoczyna od zbiorów o rozmiarze 1 i następnie zwiększa ten rozmiar w kolejnych iteracjach. Elementy każdej transakcji są uporządkowane leksykograficznie - jeżeli nawet transakcje nie są posortowane, to krokiem wstępnym algorytmu może być leksykograficzne uporządkowanie elementów transakcji (\cite{Morzy}). Po pierwszym kroku zebrane są zatem wszystkie elementy występujące w transakcjach (w postaci zbiorów jednolementowych). Następnie sprawdzane jest, które z nich posiadają wsparcie nie mniejsze niż \(minsup\). Elementy niespełniające tego wymgania są odrzucane. Pozostałe służą do utworzenia dwuelementowych zbiorów kandydujących (ang. \textit{candidate itemsets}). Dla wygenerowanych zbiorów spradzane jest czy posiadają wsparcie równe co najmniej \(minsup\). Jeśli tak, to taki zbiór jest dodawany do listy zbiorów częstych i w kolejnej iteracji jest wykorzystywany (wraz z innymi zbiorami z tejże listy) do generowania zbiorów kandydatów o rozmiarze o 1 większym. Wsparcie zbiorów sprawdzane jest na podstawie odczytu danych z bazy danych. Algorytm zatrzymuje się gdy nie ma już możliwości generowania kolejnych zbiorów. W wyniku jego działania zwracana jest suma \(k\)-elementowych zbiorów częstych \((k = 1, 2,\dots)\), która może zostać wykozystana do generowania reguł asocjacyjnych.
+
+\subsection{Algorytm Apriori - implementacja Christina Borgelta \cite{Borgelt}}
+\label{c322}
+
+\subsection{Algorytm Apriori - implementacja Ferenca Bodona \cite{Bodon}}
+\label{c323}
+
+\subsection{Algorytm Apriori - implementacja Barta Goethalsa \cite{Goethals}}
+\label{c324}
+
+
+\subsection{Common Counting \cite{WojciechowskiCC}}
+\label{c325}
+Integracja odczytów współdzielonych danych z dysku
+
+\subsection{Common Candidate Tree \cite{WojciechowskiCCT}}
+\label{c326}
+Integracja drzew haszowych w jedno drzewo gdzie kandydaci mają kilka liczników (po jednym dla zadania eksploracji)
