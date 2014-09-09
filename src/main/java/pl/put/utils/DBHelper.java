@@ -7,10 +7,14 @@ import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
+import pl.put.model.Item;
 import pl.put.model.Transaction;
+import pl.put.model.TransactionItemDB;
 
 public class DBHelper {
 
@@ -115,27 +119,27 @@ public class DBHelper {
 		return true;
 	}
 	
-	public static void insertTransactions(List<Transaction> transactions){
-		System.out.println("trans no: " + transactions.size());
+	public static void insertTransactionItems(List<TransactionItemDB> transactionItems){
+		System.out.println("transaction_items no: " + transactionItems.size());
 		
-		PreparedStatement insertTransaction = null;
-		String insertTransactionSQL = "INSERT INTO transactions (id, item)  VALUES (?, ?)"; 
+		PreparedStatement insertTransactionItem = null;
+		String insertTransactionItemSQL = "INSERT INTO transaction_items (id, item)  VALUES (?, ?)"; 
 		try {
 
-			insertTransaction = getConnection().prepareStatement(insertTransactionSQL);
+			insertTransactionItem = getConnection().prepareStatement(insertTransactionItemSQL);
 		
-			for(Transaction transaction : transactions){
-				insertTransaction.setLong(1, transaction.getId());
-				insertTransaction.setLong(2, transaction.getItem());
-				insertTransaction.executeUpdate();
+			for(TransactionItemDB transactionItem : transactionItems){
+				insertTransactionItem.setLong(1, transactionItem.getId());
+				insertTransactionItem.setLong(2, transactionItem.getItem());
+				insertTransactionItem.executeUpdate();
 			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			try {
-				if (insertTransaction != null) {
-					insertTransaction.close();
+				if (insertTransactionItem != null) {
+					insertTransactionItem.close();
 				}
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -144,5 +148,51 @@ public class DBHelper {
 		}
 	} 
 	
+	public static List<Transaction> getTransactionsFromDB(){
+		System.out.println("loading transactions");
+		
+		PreparedStatement selectTransactions = null;
+		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items"; 
+		try {
+			List<Transaction> transactions = new ArrayList<Transaction>();
 
+			selectTransactions = getConnection().prepareStatement(selectTransactiosnSQL);
+			ResultSet rs = selectTransactions.executeQuery();
+			long currentTransactionId = -1;
+			Transaction transaction = null;
+			List<Item> items = null;
+			while (rs.next()) {
+				long transactionId = rs.getLong(1);
+				if (transactionId != currentTransactionId){
+					if (transaction != null && items != null){
+						transaction.setItems(items);
+						transactions.add(transaction);
+					}
+					transaction = new Transaction();
+					items = new ArrayList<Item>();
+					transaction.setId(transactionId);
+					currentTransactionId = transactionId;
+				} 
+				Item item = new Item();
+				item.setId(rs.getLong(2));
+				items.add(item);
+			}
+			
+			return transactions;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (selectTransactions != null) {
+					selectTransactions.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+	
 }
+

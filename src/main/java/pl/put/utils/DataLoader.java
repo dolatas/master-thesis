@@ -9,13 +9,13 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.put.model.Transaction;
+import pl.put.model.TransactionItemDB;
 
 public class DataLoader {
 	
 	public static boolean importGeneratedDataToDB(){
 		
-		List<Transaction> transactions = new ArrayList<Transaction>();
+		List<TransactionItemDB> transactions = new ArrayList<TransactionItemDB>();
 		BufferedReader reader = null;
 		try {
 			String filePath = Paths.get(new File(".").getCanonicalPath(), PropertiesLoader.getProperty("data.path")).toString();
@@ -26,14 +26,14 @@ public class DataLoader {
 				try{
 					long id = Long.valueOf(line.split(" ")[0]);
 					long item = Long.valueOf(line.split(" ")[1]);
-					Transaction transaction = new Transaction(id, item);
+					TransactionItemDB transaction = new TransactionItemDB(id, item);
 					transactions.add(transaction);
 				} catch (NumberFormatException e){
 					e.printStackTrace();
 					continue;
 				}
 			}
-			DBHelper.insertTransactions(transactions);
+			DBHelper.insertTransactionItems(transactions);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return false;

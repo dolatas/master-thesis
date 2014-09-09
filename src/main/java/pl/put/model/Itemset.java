@@ -2,17 +2,9 @@ package pl.put.model;
 
 import java.util.List;
 
-public class Transaction {
-	private long id;
-	private List<Item> items;
+public class Itemset {
 	
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
+	private List<Item> items;
 
 	public List<Item> getItems() {
 		return items;

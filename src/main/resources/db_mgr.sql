@@ -1,7 +1,7 @@
 -- create tables 
-DROP TABLE IF EXISTS transactions;
+DROP TABLE IF EXISTS transaction_items;
   
-CREATE TABLE transactions(
+CREATE TABLE transaction_items(
 	row serial,
 	id bigint,
 	item bigint, 
