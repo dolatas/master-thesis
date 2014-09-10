@@ -159,20 +159,20 @@ public class DBHelper {
 			ResultSet rs = selectTransactions.executeQuery();
 			long currentTransactionId = -1;
 			Transaction transaction = null;
-			List<Long> items = null;
+			List<Integer> items = null;
 			while (rs.next()) {
-				long transactionId = rs.getLong(1);
+				int transactionId = rs.getInt(1);
 				if (transactionId != currentTransactionId){
 					if (transaction != null && items != null){
 						transaction.setItems(items);
 						transactions.add(transaction);
 					}
 					transaction = new Transaction();
-					items = new ArrayList<Long>();
+					items = new ArrayList<Integer>();
 					transaction.setId(transactionId);
 					currentTransactionId = transactionId;
 				} 
-				Long item = rs.getLong(2);
+				Integer item = rs.getInt(2);
 				items.add(item);
 			}
 			System.out.println("transactions loaded");

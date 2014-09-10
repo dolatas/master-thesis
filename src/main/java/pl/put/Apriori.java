@@ -17,6 +17,7 @@ public class Apriori {
 	public List<Itemset> fastApriori(){
 		depth = 1;
 		trie = new Trie();
+		
 
 		
 		
@@ -32,17 +33,24 @@ public class Apriori {
 		
 	}
 	
-	private void findFrequentElements(){
-		Long[] node = null;
+	private int findFrequentElements(){
+		Integer[] node = null;
 		for(Transaction transaction : transactions){
-			for(Long item : transaction.getItems()){
+			for(int item : transaction.getItems()){
 				
 			}
 		}
+		
 		if(trie.search(node)){
 			
 		}
+		
+		return -1;
 
+		
+	}
+	
+	private void generateFirstCandidates(){
 		
 	}
 	

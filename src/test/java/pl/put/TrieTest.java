@@ -17,16 +17,16 @@ public class TrieTest {
 	public void testStringTrie() {
 		Trie trie = new Trie();
 		assertEquals(0, trie.numberEntries());
-		trie.insert(new Long[] {new Long(1), new Long(2)});
+		trie.insert(new Integer[] {1, 2});
 		assertEquals(1, trie.numberEntries());
-		trie.insert(new Long[] {new Long(1), new Long(2)});
+		trie.insert(new Integer[] {1, 2});
 		assertEquals(1, trie.numberEntries());
-		trie.insert(new Long[] {new Long(3), new Long(4)});
+		trie.insert(new Integer[] {3, 4});
 		assertEquals(2, trie.numberEntries());	
  
-		assertTrue(trie.search(new Long[] {new Long(1), new Long(2)}));		// should find it
-		assertTrue(trie.search(new Long[] {new Long(3), new Long(4)}));		// should find it
-		assertFalse(trie.search(new Long[] {new Long(1)}));		// not a full word
+		assertTrue(trie.search(new Integer[] {1,2}));		// should find it
+		assertTrue(trie.search(new Integer[] {3, 4}));		// should find it
+		assertFalse(trie.search(new Integer[] {1}));		// not a full word
 	}
  
  

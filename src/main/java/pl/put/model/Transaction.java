@@ -3,22 +3,22 @@ package pl.put.model;
 import java.util.List;
 
 public class Transaction {
-	private long id;
-	private List<Long> items;
+	private int id;
+	private List<Integer> items;
 	
-	public long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
-	public List<Long> getItems() {
+	public List<Integer> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Long> items) {
+	public void setItems(List<Integer> items) {
 		this.items = items;
 	}
 	

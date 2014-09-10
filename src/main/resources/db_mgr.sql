@@ -3,8 +3,8 @@ DROP TABLE IF EXISTS transaction_items;
   
 CREATE TABLE transaction_items(
 	row serial,
-	id bigint,
-	item bigint, 
+	id integer,
+	item integer, 
 	PRIMARY KEY(row)
 );
 
