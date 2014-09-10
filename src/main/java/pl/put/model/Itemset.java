@@ -4,13 +4,13 @@ import java.util.List;
 
 public class Itemset {
 	
-	private List<Item> items;
+	private List<Long> items;
 
-	public List<Item> getItems() {
+	public List<Long> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<Long> items) {
 		this.items = items;
 	}
 }

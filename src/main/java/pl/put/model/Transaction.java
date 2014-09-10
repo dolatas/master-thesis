@@ -4,7 +4,7 @@ import java.util.List;
 
 public class Transaction {
 	private long id;
-	private List<Item> items;
+	private List<Long> items;
 	
 	public long getId() {
 		return id;
@@ -14,11 +14,11 @@ public class Transaction {
 		this.id = id;
 	}
 
-	public List<Item> getItems() {
+	public List<Long> getItems() {
 		return items;
 	}
 
-	public void setItems(List<Item> items) {
+	public void setItems(List<Long> items) {
 		this.items = items;
 	}
 	

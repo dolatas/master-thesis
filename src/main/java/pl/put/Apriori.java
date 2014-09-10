@@ -1,48 +1,81 @@
 package pl.put;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import pl.put.model.Item;
 import pl.put.model.Itemset;
 import pl.put.model.Transaction;
+import pl.put.trie.Trie;
 
 public class Apriori {
 
-	public static boolean REMOVE_INFREQUENT_ELEMENTS = true;
+	public boolean REMOVE_INFREQUENT_ELEMENTS = true;
 	
-	public static List<Itemset> fastApriori(List<Transaction> transactions){
-		if (REMOVE_INFREQUENT_ELEMENTS){
-			transactions = removeInfrequentElements(transactions);
-		}
+	private Trie trie;
+	private int depth;
+	private List<Transaction> transactions;
+	
+	public List<Itemset> fastApriori(){
+		depth = 1;
+		trie = new Trie();
+
+		
 		
 		return null;
 	}
 	
 	
-	private static List<Transaction> removeInfrequentElements(List<Transaction> transactions){
-		Map<Item, Long> itemToCounterMap = new HashMap<Item, Long>();
+	private void removeInfrequentElements(){
 		
 		for(Transaction t : transactions){
-			List<Item> items = t.getItems();
 			
 		}
 		
-		
-		return transactions;
 	}
 	
-	private static List<Item> findFrequentElements(List<Transaction> transactions){
-		List<Item> items = new ArrayList<Item>();
+	private void findFrequentElements(){
+		Long[] node = null;
+		for(Transaction transaction : transactions){
+			for(Long item : transaction.getItems()){
+				
+			}
+		}
+		if(trie.search(node)){
+			
+		}
 
 		
-		return items;
 	}
 	
-	private static void generateCandidates(int depth){
+	private void generateCandidates(){
+		if (depth == 1){
+			
+			
+		}
 		
+		if (REMOVE_INFREQUENT_ELEMENTS){
+			removeInfrequentElements();
+		}
+		
+	}
+
+
+	public Trie getTrie() {
+		return trie;
+	}
+
+
+	public void setTrie(Trie trie) {
+		this.trie = trie;
+	}
+
+
+	public List<Transaction> getTransactions() {
+		return transactions;
+	}
+
+
+	public void setTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 	
 	

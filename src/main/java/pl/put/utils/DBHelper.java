@@ -12,7 +12,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.put.model.Item;
 import pl.put.model.Transaction;
 import pl.put.model.TransactionItemDB;
 
@@ -160,7 +159,7 @@ public class DBHelper {
 			ResultSet rs = selectTransactions.executeQuery();
 			long currentTransactionId = -1;
 			Transaction transaction = null;
-			List<Item> items = null;
+			List<Long> items = null;
 			while (rs.next()) {
 				long transactionId = rs.getLong(1);
 				if (transactionId != currentTransactionId){
@@ -169,15 +168,14 @@ public class DBHelper {
 						transactions.add(transaction);
 					}
 					transaction = new Transaction();
-					items = new ArrayList<Item>();
+					items = new ArrayList<Long>();
 					transaction.setId(transactionId);
 					currentTransactionId = transactionId;
 				} 
-				Item item = new Item();
-				item.setId(rs.getLong(2));
+				Long item = rs.getLong(2);
 				items.add(item);
 			}
-			
+			System.out.println("transactions loaded");
 			return transactions;
 		} catch (SQLException e) {
 			e.printStackTrace();
