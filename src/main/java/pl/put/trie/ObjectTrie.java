@@ -5,67 +5,67 @@ import java.util.List;
 
 public class ObjectTrie<T> {
 	 
-	private Node<T> root;
+	private Node root;
  
 	private int numberEntries;
  
-	public ObjectTrie(T rootNodeValue) {
-		root = new Node<T>(rootNodeValue); // "empty value", usually some "null"  value or "empty string"
+	public ObjectTrie(List<Integer> rootNodeValue) {
+		root = new Node(rootNodeValue); // "empty value", usually some "null"  value or "empty string"
 		numberEntries = 0;
 	}
  
-	public void insert(T[] values) {
-		Node<T> current = root;
-		if (values != null) {
-			if (values.length == 0) { // "empty value"
-				current.setEndMarker(true);
-			}
-			for (int i = 0; i < values.length; i++) {
-				Node<T> child = current.findChild(values[i]);
+	public void insert(List<Integer> value) {
+		Node current = root;
+		if (!value.isEmpty()) {
+			for (int i = 0; i < value.size(); i++) {
+				Node child = current.findChildByLabel(value.get(i));
 				if (child != null) {
 					current = child;
 				} else {
-					current = current.addChild(values[i]);
+					current = current.addChild(value);
 				}
-				if (i == values.length - 1) {
-					if (!current.isEndMarker()) {
-						current.setEndMarker(true);
-						numberEntries++;
-					}
-				}
+				numberEntries++;
+				
+//				if (i == value.size() - 1) {
+//					if (!current.isEndMarker()) {
+//						current.setEndMarker(true);
+//						
+//					}
+//				}
+				
 			}
 		} else {
 			System.out.println("Not adding anything");
 		}
 	}
  
-	public boolean search(T[] values) {
-		Node<T> current = root;
-		for (int i = 0; i < values.length; i++) {
-			if (current.findChild(values[i]) == null) {
+	public boolean search(List<Integer> value) {
+		Node current = root;
+		for (int i = 0; i < value.size(); i++) {
+			if (current.findChildByLabel(value.get(i)) == null) {
 				return false;
 			} else {
-				current = current.findChild(values[i]);
+				current = current.findChildByLabel(value.get(i));
 			}
 		}
-		/*
-		 * Array T[] values found in ObjectTrie. Must verify that the "endMarker" flag
-		 * is true
-		 */
-		if (current.isEndMarker()) {
-			return true;
-		} else {
-			return false;
-		}
+
+		
+//		if (current.isEndMarker()) {
+//			return true;
+//		} else {
+//			return false;
+//		}
+		
+		return true;
 	}
  
-	public Node<T> searchNode(T[] values) {
-		Node<T> current = root;
-		for (int i = 0; i < values.length; i++) {
-			if (current.findChild(values[i]) == null) {
+	public Node searchNode(List<Integer> value) {
+		Node current = root;
+		for (int i = 0; i < value.size(); i++) {
+			if (current.findChildByLabel(value.get(i)) == null) {
 				return null;
 			} else {
-				current = current.findChild(values[i]);
+				current = current.findChild(value.get(i));
 			}
 		}
 		/*
@@ -87,15 +87,15 @@ public class ObjectTrie<T> {
 		return sb.toString();
 	}
 
-	public Node<T> getRoot() {
+	public Node getRoot() {
 		return root;
 	}
 	
-	public List<Node<T>> getNodesAtLevel(int level){
+	public List<Node> getNodesAtLevel(int level){
 		if(level < 0){
 			return null;
 		} else if(level == 0){
-			List<Node<T>> list = new ArrayList<Node<T>>();
+			List<Node> list = new ArrayList<Node>();
 			list.add(root);
 			return list;
 		} else if (level == 1){
@@ -106,9 +106,9 @@ public class ObjectTrie<T> {
 	}
 		
 	
-	private List<Node<T>> getNextLevel(List<Node<T>> nodes, int levelsToGo){
-		List<Node<T>> nodesAtLevel = new ArrayList<Node<T>>();
-		for (Node<T> child : nodes){
+	private List<Node> getNextLevel(List<Node> nodes, int levelsToGo){
+		List<Node> nodesAtLevel = new ArrayList<Node>();
+		for (Node child : nodes){
 			nodesAtLevel.addAll(child.getChildren());
 		}
 		if(levelsToGo == 0){

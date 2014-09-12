@@ -16,29 +16,29 @@ public class Apriori {
 	private static final int MINSUP = 2;
 	
 	private Trie trie;
-	private Node<Integer> root;
-	private int currentDepth = 1;
+	private Node root;
+	private int currentDepth;
 	private List<Transaction> transactions;
-	private Set<Integer> items;
-	private List<Node<Integer>> currentCandidates;
-	private List<Node<Integer>> previousCandidates;
+	private List<Integer> items;
+//	private List<Node<Integer>> currentCandidates;
 	
 	
 	public List<Itemset> fastApriori(){
 		
 		buildTree();
 //		printTree();
-//		printNodes("currentCandidates", currentCandidates);
 		
-		while(items.size() > currentDepth){
+		while(currentDepth <= items.size()){
 			
+			System.out.println("depth: " + currentDepth);
+			
+
 			countCandidatesSupport();
+			
 			printTree();
 
 			
-//			generateCandidates();
-
-
+			generateCandidates();
 			currentDepth++;
 		}
 		
@@ -47,68 +47,41 @@ public class Apriori {
 	}
 	
 	private void buildTree(){
-		trie = new Trie(null);
+		trie = new Trie(new ArrayList<Integer>());
 		root = trie.getRoot();
+		currentDepth = 0;
 
-		items = new TreeSet<Integer>();
+		Set<Integer> allItemsSet = new TreeSet<Integer>();
 		for(Transaction transaction : transactions){
 			for(Integer item : transaction.getItems()){
-				items.add(item);
+				allItemsSet.add(item);
 			}
 		}
+		items = new ArrayList<Integer>();
+		items.addAll(allItemsSet);
 		
-		int itemsNo = items.size();
+		root.setLabels(items);
+		for(Integer value : items){
+			root.addChildByLabel(value);
+		}
 		
-//		Integer[] itemsArray = new Integer[itemsNo];
-		List<Integer> itemsList = new ArrayList<Integer>();
-		itemsList.addAll(items);
-		generateCandidates(new ArrayList<Integer>(), itemsList);
+		currentDepth++;
+//		generateCandidates(new ArrayList<Integer>(), items);
 		
-//		items.powerSet();
-//		items.toArray(itemsArray);
-//		for(int i = 0; i < itemsNo; i++){
-//			Integer[] branch = new Integer[itemsNo - i];
-//			for(int j = i; j < itemsNo; j++){
-//				branch[j - i] = itemsArray[j];
-//			}
-////			trie.insert(branch);
-//			
-//		}
 
 	}
 	
-	private void prepareTree(){
-		trie = new Trie(null);
-		root = trie.getRoot();
-
-		items = new TreeSet<Integer>();
-		for(Transaction transaction : transactions){
-			for(Integer item : transaction.getItems()){
-				items.add(item);
-			}
-		}
-		
-		previousCandidates = new ArrayList<Node<Integer>>();
-		previousCandidates.add(root);
-		
-		currentCandidates = new ArrayList<Node<Integer>>();
-		for(Integer item : items){
-			root.addChild(item);
-			currentCandidates.add(new Node<Integer>(item));
-		}
-
-	}
-	
-	private void recursiveCounting(List<Integer> transactionElements, int elementIndex, List<Node<Integer>> children){
+	private void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent){
 		int elementsNo = transactionElements.size();
-		if(elementsNo >= currentDepth && children != null){
-			for(Node<Integer> node : children){
+		if((elementsNo + countingDepth >= currentDepth) && parent.getLabels() != null){
+			for(Integer label : parent.getLabels()){
 				for(int i = 0; i < elementsNo; i++){
-					if(node.getValue() == transactionElements.get(i)){
-						if(elementIndex == currentDepth){
-							node.incrementCounter();
+					if(label.equals(transactionElements.get(i))){
+						if(countingDepth == currentDepth){
+							parent.findChildByLabel(label).incrementCounter();
+//							System.out.println("increased " + parent.findChildByLabel(label)); 
 						} else {
-							recursiveCounting(transactionElements.subList(i + 1, elementsNo), elementIndex + 1, node.getChildren());
+							recursiveCounting(transactionElements.subList(i + 1, elementsNo), countingDepth + 1, parent.findChildByLabel(label));
 						}
 					} 
 				}
@@ -119,52 +92,33 @@ public class Apriori {
 
 	private void countCandidatesSupport(){
 		for(Transaction transaction : transactions){
-			recursiveCounting(transaction.getItems(), 1, root.getChildren());
+			recursiveCounting(transaction.getItems(), 1, root);
 		}
 	}
-		
-	
 
 	
-	private void generateCandidates(List<Integer> prefix, List<Integer> sufixes){
-		
-		
-		for(int i = 0; i < sufixes.size(); i++){
-			List<Integer> newPrefix = prefix;
-			newPrefix.add(sufixes.get(i));
-			Integer[] newPrefixArray = new Integer[newPrefix.size()];
-			trie.insert(newPrefix.toArray(newPrefixArray));
-			System.out.println(">>>>>>> INSERT " + newPrefix.size());
-			if (i != sufixes.size() - 1){
-				List<Integer> newSufixes = sufixes.subList(i + 1, sufixes.size());
-				generateCandidates(newPrefix, newSufixes);
+	
+	private void generateCandidates(){
+		for(Node parent : trie.getNodesAtLevel(currentDepth)){
+			
+			//add labels
+			int elementPos = items.indexOf(parent.getLastElement());
+			if (elementPos != items.size() - 1){
+				for(int i = elementPos + 1; i < items.size(); i++){
+					parent.addLabel(items.get(i));
+				}
+				
+				//add children
+				for(Integer label : parent.getLabels()){
+					parent.addChildByLabel(label);
+				}
 			}
 		}
 		
 		
 		
 		
-//		List<Node<Integer>> nextLevelCandidates = new ArrayList<Node<Integer>>();
 		
-//		previousCandidates = trie.getNodesAtLevel(currentDepth - 1);
-		
-//		if(currentDepth == 1){
-//			for(int j = 0; j < root.getChildren().size() - 1; j++){
-//				for(int k = j + 1; k < root.getChildren().size(); k++)
-//					nextLevelCandidates.add(root.getChildren().get(j).addChild(root.getChildren().get(k).getValue()));
-//				}
-//		} else {
-//			for(int i = 0; i < trie.getNodesAtLevel(currentDepth - 1).size() - 1; i++){ 
-//				for(int j = 0; j < trie.getNodesAtLevel(currentDepth - 1).get(i).getChildren().size() - 1; j++){
-//					for(int k = j + 1; k < trie.getNodesAtLevel(currentDepth - 1).get(i).getChildren().size(); k++){
-//						Node<Integer> newNode = trie.getNodesAtLevel(currentDepth - 1).get(i).getChildren().get(j).addChild(trie.getNodesAtLevel(currentDepth - 1).get(k).getValue());
-//						nextLevelCandidates.add(newNode);
-//					}
-//				}
-//			}
-//		}
-//		previousCandidates = currentCandidates;
-//		currentCandidates = nextLevelCandidates;
 	}
 
 
@@ -190,9 +144,9 @@ public class Apriori {
 	
 	
 // **** test functions ****
-	private void printNodes(String listName, List<Node<Integer>> nodes){
+	private void printNodes(String listName, List<Node> nodes){
 		System.out.println("List: " + listName);
-		for(Node<Integer> node : nodes){
+		for(Node node : nodes){
 			System.out.println("    n: " + node.getValue() + "; c: " + node.getCounter());
 		}
 	}
@@ -205,12 +159,12 @@ public class Apriori {
 			printNextLevel(trie.getNodesAtLevel(i));
 	}
 	
-	private void printNextLevel(List<Node<Integer>> nodes){
+	private void printNextLevel(List<Node> nodes){
 		StringBuilder output = new StringBuilder();
 		output.append("|");
 		output.append(" ");
-		for(Node<Integer> node : nodes){
-			for(Node<Integer> child: node.getChildren()){
+		for(Node node : nodes){
+			for(Node child: node.getChildren()){
 				output.append(child.getValue());
 				output.append("(");
 				output.append(child.getCounter());

@@ -5,17 +5,17 @@ import java.util.List;
 //http://ken-soft.com/2012/03/20/java-trie-prefix-tree/
 public class Trie {
 	 
-	private ObjectTrie<Integer> trie;
+	private ObjectTrie<List<Integer>> trie;
 	
-	public Trie(Integer root) {
-		trie = new ObjectTrie<Integer>(root);
+	public Trie(List<Integer> root) {
+		trie = new ObjectTrie<List<Integer>>(root);
 	}
  
-	public void insert(Integer[] node) {
+	public void insert(List<Integer> node) {
 		trie.insert(node);
 	}
  
-	public boolean search(Integer[] node) {
+	public boolean search(List<Integer> node) {
 		return trie.search(node);
 	}
  
@@ -27,15 +27,15 @@ public class Trie {
 		return trie.toString();
 	}
 	
-	public Node<Integer> getRoot() {
+	public Node getRoot() {
 		return trie.getRoot();
 	}
 	
-	public List<Node<Integer>> getNodesAtLevel(int level){
+	public List<Node> getNodesAtLevel(int level){
 		return trie.getNodesAtLevel(level);
 	}
 	
-	public Node<Integer> searchNode(Integer[] values) {
+	public Node searchNode(List<Integer> values) {
 		return trie.searchNode(values);
 	}
  
