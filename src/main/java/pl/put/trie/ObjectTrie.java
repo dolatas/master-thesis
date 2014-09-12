@@ -1,5 +1,8 @@
 package pl.put.trie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ObjectTrie<T> {
 	 
 	private Node<T> root;
@@ -56,6 +59,22 @@ public class ObjectTrie<T> {
 		}
 	}
  
+	public Node<T> searchNode(T[] values) {
+		Node<T> current = root;
+		for (int i = 0; i < values.length; i++) {
+			if (current.findChild(values[i]) == null) {
+				return null;
+			} else {
+				current = current.findChild(values[i]);
+			}
+		}
+		/*
+		 * Array T[] values found in ObjectTrie. Must verify that the "endMarker" flag
+		 * is true
+		 */
+		return current;
+	}
+	
 	public int numberEntries() {
 		return numberEntries;
 	}
@@ -66,6 +85,37 @@ public class ObjectTrie<T> {
 		sb.append(numberEntries);
  
 		return sb.toString();
+	}
+
+	public Node<T> getRoot() {
+		return root;
+	}
+	
+	public List<Node<T>> getNodesAtLevel(int level){
+		if(level < 0){
+			return null;
+		} else if(level == 0){
+			List<Node<T>> list = new ArrayList<Node<T>>();
+			list.add(root);
+			return list;
+		} else if (level == 1){
+			return root.getChildren();
+		} else {
+			return getNextLevel(root.getChildren(), level - 1);
+		}
+	}
+		
+	
+	private List<Node<T>> getNextLevel(List<Node<T>> nodes, int levelsToGo){
+		List<Node<T>> nodesAtLevel = new ArrayList<Node<T>>();
+		for (Node<T> child : nodes){
+			nodesAtLevel.addAll(child.getChildren());
+		}
+		if(levelsToGo == 0){
+			return nodes;
+		} else {
+			return getNextLevel(nodesAtLevel, levelsToGo - 1);
+		}
 	}
  
 }

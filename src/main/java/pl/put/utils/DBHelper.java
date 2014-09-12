@@ -175,6 +175,9 @@ public class DBHelper {
 				Integer item = rs.getInt(2);
 				items.add(item);
 			}
+			//add last transaction
+			transaction.setItems(items);
+			transactions.add(transaction);
 			System.out.println("transactions loaded");
 			return transactions;
 		} catch (SQLException e) {

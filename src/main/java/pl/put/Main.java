@@ -18,7 +18,12 @@ public class Main {
 		}
 		
 		
-		DBHelper.getTransactionsFromDB();
+		
+		
+		
+		Apriori apriori = new Apriori();
+		apriori.setTransactions(DBHelper.getTransactionsFromDB());
+		apriori.fastApriori();
 		
 	}
 

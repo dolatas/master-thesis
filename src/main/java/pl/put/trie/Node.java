@@ -7,6 +7,8 @@ public class Node<T> {
 	private T value;
  
 	private boolean endMarker;
+	
+	private int counter;
  
 	public ArrayList<Node<T>> children;
  
@@ -14,6 +16,7 @@ public class Node<T> {
 	public Node(T value) {
 		this.value = value;
 		this.endMarker = false;
+		this.counter = 0;
 		this.children = new ArrayList<Node<T>>();
 	}
  
@@ -45,5 +48,23 @@ public class Node<T> {
 		children.add(n);
 		return n;
 	}
+	 
+	public int getCounter() {
+		return counter;
+	}
+	public void incrementCounter() {
+		this.counter++;
+	}
+
+	public ArrayList<Node<T>> getChildren() {
+		return children;
+	}
+
+	@Override
+	public String toString() {
+		return value.toString();
+	}
+	
+	
  
 }

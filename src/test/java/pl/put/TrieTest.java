@@ -8,25 +8,39 @@ import java.util.HashMap;
  
 import org.junit.Test;
 
+import pl.put.trie.Node;
 import pl.put.trie.ObjectTrie;
 import pl.put.trie.Trie;
  
 public class TrieTest {
  
 	@Test
+	public void testTrie() {
+		Trie trie = new Trie(null);
+		trie.getRoot().addChild(1);
+		trie.getRoot().getChildren().get(0).addChild(2);
+		
+		trie.insert(new Integer[] {new Integer(1), new Integer(2)});
+		assertEquals(1, trie.numberEntries());
+		
+		assertTrue(trie.search(new Integer[] {new Integer(1), new Integer(2)}));		// should find it
+		assertFalse(trie.search(new Integer[] {new Integer(1)}));		// not a full word
+	}
+	
+	@Test
 	public void testStringTrie() {
-		Trie trie = new Trie();
+		Trie trie = new Trie(null);
 		assertEquals(0, trie.numberEntries());
-		trie.insert(new Integer[] {1, 2});
+		trie.insert(new Integer[] {new Integer(1), new Integer(2)});
 		assertEquals(1, trie.numberEntries());
-		trie.insert(new Integer[] {1, 2});
+		trie.insert(new Integer[] {new Integer(1), new Integer(2)});
 		assertEquals(1, trie.numberEntries());
-		trie.insert(new Integer[] {3, 4});
+		trie.insert(new Integer[] {new Integer(3), new Integer(4)});
 		assertEquals(2, trie.numberEntries());	
  
-		assertTrue(trie.search(new Integer[] {1,2}));		// should find it
-		assertTrue(trie.search(new Integer[] {3, 4}));		// should find it
-		assertFalse(trie.search(new Integer[] {1}));		// not a full word
+		assertTrue(trie.search(new Integer[] {new Integer(1), new Integer(2)}));		// should find it
+		assertTrue(trie.search(new Integer[] {new Integer(3), new Integer(4)}));		// should find it
+		assertFalse(trie.search(new Integer[] {new Integer(1)}));		// not a full word
 	}
  
  
