@@ -53,6 +53,9 @@ Zbiorem maksymalnym nazywamy taki zbiór częsty, dla którego nie istnieje żad
 
 \subsection{Zapytanie eksploracyjne}
 \label{c229}
+Zapytanie eksporacyjne jest uporządkowaną piątkę \(dmq = (R, a, \Sigma, \Phi, minsup) \), gdzie \(R\) - relacja bazy danych, \(a\) - atrybut realacji \(R\), \(\Sigma\) - wyrażenie warunkowe dotyczące atrybutów \(R\) nazywane predykatem selekcji danych, \(\Phi\) - wyrażenie warunkowe dotyczące odkrywanych zbiorów częstych nazywane predykatem selekcji wzorców, \(minsup\) - próg minimalnego wsparcia. Wynikiem zapytania eksporacyjnego są zbiory częste odkryte w \(\pi _a \sigma _\Sigma R \), które spełniają predykat \(\Phi\) i posiadają \(wsparcie \geq minsup\) (\(\pi\) - relacyjna operacja projekcji, \(\sigma\) - relacyjna operacja selekcji).
 
-\subsection{Zbiór elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych}
+
+\subsection{Zbiór elementarnych predykatów selekcji danych}
 \label{c2210}
+Zbiorem elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych \(DMQ = \{dmq_1, dmq_2, \dots, dmq_n\}\) nazywamy najmniej liczny zbiór \(S = \{s_1, s_2, \dots, s_k\}\) (\(s_i\) - \(i\)-ty predykat selekcji danych z relacji \(R\)), dla którego dla każdej pary \(u, v (u \neq v)\) zachodzi \(\sigma{s_u}R \cap \sigma{s_v}R = \emptyset\)  i dla każdego \(dmq_i\) istnieją liczby całkowite \(a, b, \dots, m\), takie że \(\sigma_{\Sigma_i}R = \sigma_{s_a}R \cup \sigma_{s_b}R \cup \dots \cup \sigma_{s_m}R\). Zbiór ten jest reprezentacją podziału bazy danych na partycje, które zostały wyznaczone przez nakładajace się źródłowe zbiory danych zapytań.
