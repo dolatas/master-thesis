@@ -5,19 +5,18 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import pl.put.model.AprioriResult;
+import pl.put.model.Dmq;
+import pl.put.model.Itemset;
 import pl.put.model.Transaction;
 import pl.put.trie.Node;
 import pl.put.trie.NodeCC;
 import pl.put.trie.Trie;
-import pl.put.utils.FileWriter;
 
-public class AprioriCC {
+public class AprioriCC extends Apriori {
 
-	private int minsup;
-	
-	public AprioriCC(List<Transaction> transactions, int minsup){
-		this.transactions = transactions;
-		this.minsup = minsup;
+	public AprioriCC(Dmq[] dmqs){
+		this.dmqs = dmqs;
 	}
 	
 	private Trie trie;
@@ -25,25 +24,38 @@ public class AprioriCC {
 	private int currentDepth;
 	private List<Transaction> transactions;
 	private List<Integer> items;
+	private Dmq[] dmqs;
+	private int minsup;
 	
-	public List<Integer> fastApriori(){
+	@Override
+	public List<AprioriResult> fastApriori(){
+
+		List<AprioriResult> result = new ArrayList<AprioriResult>();
 		
-		buildTree();
-		int candidatesNo = items.size();
-		while(candidatesNo > 0){
+		for(Dmq dmq : dmqs){
 			
-			countCandidatesSupport();
+			transactions = dmq.getTransactions();
+			minsup = dmq.getMinsup();
 			
-			printTree();
-			candidatesNo = generateCandidates();
-			currentDepth++;
+			buildTree();
+			
+			int candidatesNo = items.size();
+			
+			while(candidatesNo > 0){
+				countCandidatesSupport();
+				printTree();
+				candidatesNo = generateCandidates();
+				currentDepth++;
+			}
+			
+			result.add(findAprioriResult());
 		}
 		
-		
-		return null;
+		return result;
 	}
 	
-	private void buildTree(){
+	@Override
+	protected void buildTree(){
 		root = new NodeCC(new ArrayList<Integer>());
 		trie = new Trie(root);
 		root = trie.getRoot();
@@ -67,7 +79,8 @@ public class AprioriCC {
 
 	}
 	
-	private void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent){
+	@Override
+	protected void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent){
 		int elementsNo = transactionElements.size();
 		if((elementsNo + countingDepth >= currentDepth) && parent.getLabels() != null){
 			for(Integer label : parent.getLabels()){
@@ -75,7 +88,6 @@ public class AprioriCC {
 					if(label.equals(transactionElements.get(i))){
 						if(countingDepth == currentDepth){
 							((NodeCC)parent.findChildByLabel(label)).incrementCounter();
-//							System.out.println("increased " + parent.findChildByLabel(label)); 
 						} else {
 							recursiveCounting(transactionElements.subList(i + 1, elementsNo), countingDepth + 1, parent.findChildByLabel(label));
 						}
@@ -86,15 +98,15 @@ public class AprioriCC {
 	}
 	
 
-	private void countCandidatesSupport(){
+	@Override
+	protected void countCandidatesSupport(){
 		for(Transaction transaction : transactions){
 			recursiveCounting(transaction.getItems(), 1, root);
 		}
 	}
 
-	
-	
-	private int generateCandidates(){
+	@Override
+	protected int generateCandidates(){
 		int candidatesNo = 0;
 		for(Node parent : trie.getNodesAtLevel(currentDepth)){
 			
@@ -114,50 +126,37 @@ public class AprioriCC {
 		}
 		return candidatesNo;
 	}
+
 	
+
+	@Override
+	protected AprioriResult findAprioriResult() {
+		AprioriResult aprioriResult = new AprioriResult();
+		aprioriResult.addFrequentItemsets(findFrequentItemsets(root));
+		return aprioriResult;
+	}
 	
-	public void saveResultsToFile(String fileName, Node parent){
-		if(parent == null){
-			parent = root;
-		}
-		
+	private List<Itemset> findFrequentItemsets(Node parent){
+		List<Itemset> itemsets = new ArrayList<Itemset>();
 		for (Node node : parent.getChildren()){
 			if (((NodeCC) node).getCounter() >= minsup){
-				FileWriter.saveToFile(fileName, true, node.toString());
-				saveResultsToFile(fileName, node);
+				itemsets.add(new Itemset(node.getValue()));
+				itemsets.addAll(findFrequentItemsets(node));
 			}
 		}
-	}
-
-	public Trie getTrie() {
-		return trie;
-	}
-
-
-	public void setTrie(Trie trie) {
-		this.trie = trie;
-	}
-
-
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+		return itemsets;
 	}
 	
 	
-// **** test functions ****
 	
-	private void printTree(){
+// **** console print functions ****
+	protected void printTree(){
 		System.out.println(">>>>>>>>> TREE <<<<<<<<<< depth:" + currentDepth);
 		for(int i = 0; i < currentDepth; i++)
 			printNextLevel(trie.getNodesAtLevel(i));
-	}
-	
-	private void printNextLevel(List<Node> nodes){
+		}
+		
+	protected void printNextLevel(List<Node> nodes){
 		StringBuilder output = new StringBuilder();
 		output.append("|");
 		output.append(" ");
@@ -174,5 +173,4 @@ public class AprioriCC {
 		System.out.println(output.toString());
 		
 	}
-	
 }

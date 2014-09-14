@@ -18,7 +18,7 @@ public class FileWriter {
 			}
 	
 			// get the content in bytes
-			byte[] contentInBytes = (content+ "\n").getBytes();
+			byte[] contentInBytes = (content + "\n").getBytes();
 
 			fop.write(contentInBytes);
 			fop.flush();
