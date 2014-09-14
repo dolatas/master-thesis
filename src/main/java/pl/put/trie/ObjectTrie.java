@@ -9,8 +9,8 @@ public class ObjectTrie<T> {
  
 	private int numberEntries;
  
-	public ObjectTrie(List<Integer> rootNodeValue) {
-		root = new Node(rootNodeValue); // "empty value", usually some "null"  value or "empty string"
+	public ObjectTrie(Node root) {
+		this.root = root; // "empty value", usually some "null"  value or "empty string"
 		numberEntries = 0;
 	}
  
@@ -25,13 +25,6 @@ public class ObjectTrie<T> {
 					current = current.addChild(value);
 				}
 				numberEntries++;
-				
-//				if (i == value.size() - 1) {
-//					if (!current.isEndMarker()) {
-//						current.setEndMarker(true);
-//						
-//					}
-//				}
 				
 			}
 		} else {
@@ -49,13 +42,6 @@ public class ObjectTrie<T> {
 			}
 		}
 
-		
-//		if (current.isEndMarker()) {
-//			return true;
-//		} else {
-//			return false;
-//		}
-		
 		return true;
 	}
  
@@ -68,10 +54,7 @@ public class ObjectTrie<T> {
 				current = current.findChild(value.get(i));
 			}
 		}
-		/*
-		 * Array T[] values found in ObjectTrie. Must verify that the "endMarker" flag
-		 * is true
-		 */
+
 		return current;
 	}
 	

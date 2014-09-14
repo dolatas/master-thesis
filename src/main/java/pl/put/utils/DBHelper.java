@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.put.model.Dmq;
 import pl.put.model.Transaction;
 import pl.put.model.TransactionItemDB;
 
@@ -195,5 +196,111 @@ public class DBHelper {
 		}
 	}
 	
+	public static List<Transaction> getTransactionsForDmq(Dmq dmq){
+		System.out.println("loading transactions for dmq");
+		
+		PreparedStatement selectTransactions = null;
+		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?"; 
+		try {
+			List<Transaction> transactions = new ArrayList<Transaction>();
+
+			selectTransactions = getConnection().prepareStatement(selectTransactiosnSQL);
+			selectTransactions.setInt(1, dmq.getFromExcluded());
+			selectTransactions.setInt(2, dmq.getToIncluded());
+			ResultSet rs = selectTransactions.executeQuery();
+			long currentTransactionId = -1;
+			Transaction transaction = null;
+			List<Integer> items = null;
+			while (rs.next()) {
+				int transactionId = rs.getInt(1);
+				if (transactionId != currentTransactionId){
+					if (transaction != null && items != null){
+						transaction.setItems(items);
+						transactions.add(transaction);
+					}
+					transaction = new Transaction();
+					items = new ArrayList<Integer>();
+					transaction.setId(transactionId);
+					currentTransactionId = transactionId;
+				} 
+				Integer item = rs.getInt(2);
+				items.add(item);
+			}
+			//add last transaction
+			transaction.setItems(items);
+			transactions.add(transaction);
+			System.out.println("transactions for dmq loaded");
+			return transactions;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (selectTransactions != null) {
+					selectTransactions.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+	}
+
+	public static int getItemsNo() {
+		System.out.println("getting itemsNo");
+
+		PreparedStatement getItemsNo = null;
+		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items) itemsNo";
+		try {
+			getItemsNo = getConnection().prepareStatement(getItemsNoSQL);
+			ResultSet rs = getItemsNo.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return -1;
+		} finally {
+			try {
+				if (getItemsNo != null) {
+					getItemsNo.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return -1;
+
+	}
+
+	public static int[] getTIDsRange() {
+		System.out.println("getting TIDs range");
+		int[] range = new int[2];
+		PreparedStatement getItemsNo = null;
+		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items";
+		try {
+			getItemsNo = getConnection().prepareStatement(getItemsNoSQL);
+			ResultSet rs = getItemsNo.executeQuery();
+			if (rs.next()) {
+				range[0] = rs.getInt(1);
+				range[1] = rs.getInt(2);
+			}
+
+			return range;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if (getItemsNo != null) {
+					getItemsNo.close();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 }
 

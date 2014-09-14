@@ -7,7 +7,7 @@ public class Trie {
 	 
 	private ObjectTrie<List<Integer>> trie;
 	
-	public Trie(List<Integer> root) {
+	public Trie(Node root) {
 		trie = new ObjectTrie<List<Integer>>(root);
 	}
  

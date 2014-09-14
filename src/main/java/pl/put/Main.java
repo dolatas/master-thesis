@@ -16,14 +16,16 @@ public class Main {
 			DBHelper.resetDB();
 			DataLoader.importGeneratedDataToDB();
 		}
+
+		int[] tIDsRange = DBHelper.getTIDsRange();
 		
 		
 		
+		CommonAlgorithm cc = new CommonCounting(tIDsRange[0], tIDsRange[1]);
+		cc.getResult();
 		
-		
-		Apriori apriori = new Apriori();
-		apriori.setTransactions(DBHelper.getTransactionsFromDB());
-		apriori.fastApriori();
+//		AprioriCC apriori = new AprioriCC(DBHelper.getTransactionsFromDB(), 1);
+//		apriori.fastApriori();
 		
 	}
 

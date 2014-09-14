@@ -8,7 +8,7 @@ import java.util.HashMap;
  
 import org.junit.Test;
 
-import pl.put.trie.Node;
+import pl.put.trie.NodeCC;
 import pl.put.trie.ObjectTrie;
 import pl.put.trie.Trie;
  
