@@ -9,6 +9,7 @@ import pl.put.model.Transaction;
 import pl.put.trie.Node;
 import pl.put.trie.NodeCC;
 import pl.put.trie.Trie;
+import pl.put.utils.FileWriter;
 
 public class AprioriCC {
 
@@ -113,9 +114,21 @@ public class AprioriCC {
 		}
 		return candidatesNo;
 	}
-
-
 	
+	
+	public void saveResultsToFile(String fileName, Node parent){
+		if(parent == null){
+			parent = root;
+		}
+		
+		for (Node node : parent.getChildren()){
+			if (((NodeCC) node).getCounter() >= minsup){
+				FileWriter.saveToFile(fileName, true, node.toString());
+				saveResultsToFile(fileName, node);
+			}
+		}
+	}
+
 	public Trie getTrie() {
 		return trie;
 	}

@@ -11,13 +11,15 @@ import pl.put.trie.Node;
 import pl.put.trie.NodeCC;
 import pl.put.trie.NodeCCT;
 import pl.put.trie.Trie;
+import pl.put.utils.FileWriter;
 
-public class AprioriCCT {
+public class AprioriCCT extends Apriori{
 
 	private int minsup[];
 	List<Dmq> dmqList;
 	
 	public AprioriCCT(List<Transaction> transactions, List<Dmq> dmqList, int minsup[]){
+		super(transactions, minsup[0]);
 		this.transactions = transactions;
 		this.minsup = minsup;
 		this.dmqList = dmqList;
@@ -81,7 +83,6 @@ public class AprioriCCT {
 					if(label.equals(transactionElements.get(i))){
 						if(countingDepth == currentDepth){
 							((NodeCCT)parent.findChildByLabel(label)).incrementCounter(dmqIndex);
-//							System.out.println("increased " + parent.findChildByLabel(label)); 
 						} else {
 							recursiveCounting(transactionElements.subList(i + 1, elementsNo), countingDepth + 1, parent.findChildByLabel(label));
 						}
@@ -121,52 +122,22 @@ public class AprioriCCT {
 		return candidatesNo;
 	}
 
-
-	
-	public Trie getTrie() {
-		return trie;
-	}
-
-
-	public void setTrie(Trie trie) {
-		this.trie = trie;
-	}
-
-
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-
-
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
-	}
-	
-	
-// **** test functions ****
-
-	private void printTree(){
-		System.out.println(">>>>>>>>> TREE <<<<<<<<<< depth:" + currentDepth);
-		for(int i = 0; i < currentDepth; i++)
-			printNextLevel(trie.getNodesAtLevel(i));
-	}
-	
-	private void printNextLevel(List<Node> nodes){
-		StringBuilder output = new StringBuilder();
-		output.append("|");
-		output.append(" ");
-		for(Node node : nodes){
-			for(Node child: node.getChildren()){
-				output.append(child.getValue());
-				output.append("(");
-				output.append(((NodeCC)child).getCounter());
-				output.append(")");
-				output.append(" ");
-			}
-		output.append("|");
+	@Override
+	public void saveResultsToFile(String fileName, Node parent){
+		if(parent == null){
+			parent = root;
 		}
-		System.out.println(output.toString());
 		
+		for (Node node : parent.getChildren()){
+			int[] nodeCounters = ((NodeCCT) node).getCounters();
+			for(int i = 0; i < nodeCounters.length; i++){
+				if (nodeCounters[i] >= minsup[i]){
+					FileWriter.saveToFile(fileName, true, node.toString());
+					saveResultsToFile(fileName, node);
+				}
+			}
+			
+		}
 	}
 	
 }
