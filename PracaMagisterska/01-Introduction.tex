@@ -5,7 +5,7 @@
 \label{c11}
 
 
-Odkrywanie zbiorów częstych i generowanie na ich podstawie reguł asocjacyjnych, to problem sformułowany w kontekście analizy koszyka zakupów. Głównym celem jest szukanie prawidłowości w zachowaniu klientów supermarketów. Szybko znalazł on również zastosowanie w wielu innych dziedzinach, takich jak chociażby analiza działalności firm wysyłkowych, sklepów internetowych etc. Z wykorzystaniem znalezionych zbiorów częstych i wygenerowanych reguł dąży się do tego aby możn było wynioskować (z dużym prawdopodobieństwem), że niektóre produkty współwystępują ze sobą. Informacje takie, zwłaszcza jeśli wyrażone w formie zasad, często mogą być stosowane w celu zwiększenia sprzedanych danych produktów - na przykład poprzez odpowiednie rozmieszczenie ich na półkach w supermarkecie lub na stronach katalogu wysyłkowego (umieszczenie obok siebie może zachęcić jeszcze więcej klientów do zakupu ich razem) lub poprzez bezpośrednie sugerowanie klientom produktów, którymi mogą być zainteresowani. 
+Odkrywanie zbiorów częstych i generowanie na ich podstawie reguł asocjacyjnych, to problem sformułowany w kontekście analizy koszyka zakupów. Głównym celem jest szukanie prawidłowości w zachowaniu klientów supermarketów. Szybko znalazł on również zastosowanie w wielu innych dziedzinach, takich jak chociażby analiza działalności firm wysyłkowych, sklepów internetowych etc. Z wykorzystaniem znalezionych zbiorów częstych i wygenerowanych reguł dąży się do tego aby można było wnioskować (z dużym prawdopodobieństwem), że niektóre produkty współwystępują ze sobą. Informacje takie, zwłaszcza jeśli wyrażone w formie zasad, często mogą być stosowane w celu zwiększenia sprzedanych danych produktów - na przykład poprzez odpowiednie rozmieszczenie ich na półkach w supermarkecie lub na stronach katalogu wysyłkowego (umieszczenie obok siebie może zachęcić jeszcze więcej klientów do zakupu ich razem) lub poprzez bezpośrednie sugerowanie klientom produktów, którymi mogą być zainteresowani. 
 
 Oczywistym jest, że należy szukać tylko takich reguł asocjacyjnych, które są wiarygodne i niosą ze sobą jakąś informację. Istnieją wskaźniki służące do oceny tychże reguł. Zostały one omówione bardziej szczegółowo w rozdziale 2. 
 
@@ -14,26 +14,26 @@ Głównym problemem indukcji reguł asocjacyjnych jest to, że istnieje bardzo w
 Podstawowy algorytm Apriori trzyma kandydatów w drzewie haszowym. W ostatnich latach zaproponowane zostały metody Common Counting (\cite{WojciechowskiCC}) oraz Common Candidate Tree (\cite{WojciechowskiCCT}). Są one wynikiem badań nad optymalizacją wykonania kilku zadań Apriori uruchomionych współbieżnie na nakładających się podzbiorach tabeli z danymi. Metody sprowadzały się do:\newline
 - Integracji odczytów współdzielonych danych z dysku;\newline
 - Integracji drzew haszowych w jedno drzewo gdzie kandydaci mają kilka liczników (po jednym dla zadania eksploracji).\newline
-W praktyce jednak lepsze okazały się implementacje Apriori gdzie drzewo haszowe zastąpiono znacznie prostszą strukturą drzewa prefiksowego. Powstało kilka rozwiązań wykorzystujacych tę strukturę: Borgelt, Bodon, Goethals. Jednak do tej pory nie została zaimplementowana modyfikacja Common Counting i Common Candidate Tree dla Apriori z drzewem prefiksowym i to właśnie jest celem tej pracy. 
+W praktyce jednak lepsze okazały się implementacje Apriori gdzie drzewo haszowe zastąpiono znacznie prostszą strukturą drzewa prefiksowego. Powstało kilka rozwiązań wykorzystujących tę strukturę: Borgelt, Bodon, Goethals. Jednak do tej pory nie została zaimplementowana modyfikacja Common Counting i Common Candidate Tree dla Apriori z drzewem prefiksowym i to właśnie jest celem tej pracy. 
 
 \section{Cel i zakres pracy}
 \label{c12}
 
-Tak jak wspomniano, ogolnym celem pracy jest implementacja dwóch algorytmów wykonania zbioru zapytań odkrywających zbiory częste - które dotychczas implementowne były na drzewie haszowym - z wykorzystaniem drzew prefiksowych. \newline
+Tak jak wspomniano, ogólnym celem pracy jest implementacja dwóch algorytmów wykonania zbioru zapytań odkrywających zbiory częste - które dotychczas implementowne były na drzewie haszowym - z wykorzystaniem drzew prefiksowych. \newline
 Na ten ogólny cel pracy składają się następujące cele szczegółowe:
 - przedstawienie, analiza i porównanie istniejących rozwiązań dotyczących tematyki pracy
 - implementacja modyfikacji Common Counting i Common Candidate Tree dla Apriori z drzewem prefiksowym;\newline
-- przetesotowanie wydajności zaimplementowanych algorytmów.\newline
+- przetestowanie wydajności zaimplementowanych algorytmów.\newline
 
 \section{Opis infrastruktury}
 \label{c13}
-Algorytmy napisane zostały w języku Java, z wykorzystaniem narzędzia Maven oraz środowiska programistycznego Eclipse. Dane testowe generowane były za pomocą generatora GEN (\cite{AgrawalGEN}), a następnie wczytywane do bazy PostgreSQL, z której korzystała aplikacja. Tetsy przeprowadzone zostały na komputerze HP Envy 14 Notebook PC, z procesorem Intel Core i5-2410M 2x2.30GHz oraz 8GB pamięci RAM, pracujacym pod kontrola systemu operacyjnego Microsoft Windows 7. 
+Algorytmy napisane zostały w języku Java, z wykorzystaniem narzędzia Maven oraz środowiska programistycznego Eclipse. Dane testowe generowane były za pomocą generatora GEN (\cite{AgrawalGEN}), a następnie wczytywane do bazy PostgreSQL, z której korzystała aplikacja. Testy przeprowadzone zostały na komputerze HP Envy 14 Notebook PC, z procesorem Intel Core i5-2410M 2x2.30GHz oraz 8GB pamięci RAM, pracujacym pod kontrola systemu operacyjnego Microsoft Windows 7. 
 	
 \section{Struktura pracy}
 \label{c14}   
 Struktura pracy jest następująca:\newline
 -- w rozdziale 2 omówiono podstawowe pojęcia i definicje wykorzystywane w pracy;\newline
 -- w rozdziale 3 przedstawiono istniejące rozwiązania i algorytmy, związane z tematem pracy;\newline
--- w rozdziale 4 przedstawiono ideę, opis i cechy alogrytmów;\newline
+-- w rozdziale 4 przedstawiono ideę, opis i cechy algorytmów;\newline
 -- w rozdziale 5 przeanalizowano działanie algorytmów dla różnych parametrów i danych wejściowych;\newline
 -- w rozdziale 6 przedstawiono wnioski i uwagi do pracy.
