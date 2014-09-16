@@ -18,15 +18,24 @@ public class CommonCandidateTree extends CommonAlgorithm {
 	@Override
 	public List<Integer> getResult() {
 		
+		long startTime = System.nanoTime();   
+		
+		
+		/**** algorithm start ****/
+		
 		for(Dmq dmq : minimalDmq){
 			dmq.setTransactions(DBHelper.getTransactionsForDmq(dmq));
 		}
-		
 		Apriori apriori = new AprioriCCT(minimalDmq);
 		List<AprioriResult> result = apriori.fastApriori();
+		
+		/**** algorithm stop ****/
 
+
+		long estimatedTime = System.nanoTime() - startTime;
 		String fileName = PropertiesLoader.getProperty("apriori.cct.result.file");
 		FileWriter.saveToFile(fileName, false, new Date().toString());
+		FileWriter.saveToFile(fileName, true, "time: " + estimatedTime);
 		
 		for(AprioriResult aprioriResult : result){
 			FileWriter.saveToFile(fileName, true, aprioriResult.toString());

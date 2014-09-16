@@ -200,13 +200,13 @@ public class DBScriptRunner {
 
 	private void print(Object o) {
 		if (logWriter != null) {
-			System.out.print(o);
+//			System.out.print(o);
 		}
 	}
 
 	private void println(Object o) {
 		if (logWriter != null) {
-			logWriter.println(o);
+//			logWriter.println(o);
 		}
 	}
 

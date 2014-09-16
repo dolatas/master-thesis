@@ -43,7 +43,7 @@ public class AprioriCC extends Apriori {
 			
 			while(candidatesNo > 0){
 				countCandidatesSupport();
-				printTree();
+//				printTree();
 				candidatesNo = generateCandidates();
 				currentDepth++;
 			}

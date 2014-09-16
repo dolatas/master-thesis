@@ -31,15 +31,10 @@ public class DBHelper {
 
 	private static Connection connection;
 
-	// public DBHelper() {
-	// // Exists only to defeat instantiation.
-	// }
-
 	public static Connection getConnection() {
 		try {
 			if (connection == null || connection.isClosed()) {
-				System.out.println("-------- PostgreSQL "
-						+ "JDBC Connection Testing ------------");
+//				System.out.println("-- PostgreSQL " + "JDBC Connection Testing --");
 
 				try {
 					Class.forName(DB_DRIVER);
@@ -61,7 +56,7 @@ public class DBHelper {
 				}
 
 				if (connection != null) {
-					System.out.println("Connection succesful!");
+					System.out.println("DB connection succesful.");
 				} else {
 					System.out.println("Connection failed!");
 				}
@@ -120,7 +115,7 @@ public class DBHelper {
 	}
 	
 	public static void insertTransactionItems(List<TransactionItemDB> transactionItems){
-		System.out.println("transaction_items no: " + transactionItems.size());
+//		System.out.println("transaction_items no: " + transactionItems.size());
 		
 		PreparedStatement insertTransactionItem = null;
 		String insertTransactionItemSQL = "INSERT INTO transaction_items (id, item)  VALUES (?, ?)"; 
@@ -149,7 +144,7 @@ public class DBHelper {
 	} 
 	
 	public static List<Transaction> getTransactionsFromDB(){
-		System.out.println("loading transactions");
+//		System.out.println("loading transactions");
 		
 		PreparedStatement selectTransactions = null;
 		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items"; 
@@ -179,7 +174,7 @@ public class DBHelper {
 			//add last transaction
 			transaction.setItems(items);
 			transactions.add(transaction);
-			System.out.println("transactions loaded");
+//			System.out.println("transactions loaded");
 			return transactions;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -197,7 +192,7 @@ public class DBHelper {
 	}
 	
 	public static List<Transaction> getTransactionsForDmq(Dmq dmq){
-		System.out.println("loading transactions for dmq");
+//		System.out.println("loading transactions for dmq");
 		
 		PreparedStatement selectTransactions = null;
 		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?"; 
@@ -229,7 +224,7 @@ public class DBHelper {
 			//add last transaction
 			transaction.setItems(items);
 			transactions.add(transaction);
-			System.out.println("transactions for dmq loaded");
+//			System.out.println("transactions for dmq loaded");
 			return transactions;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -247,7 +242,7 @@ public class DBHelper {
 	}
 
 	public static int getItemsNo() {
-		System.out.println("getting itemsNo");
+//		System.out.println("getting itemsNo");
 
 		PreparedStatement getItemsNo = null;
 		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items) itemsNo";
@@ -275,7 +270,7 @@ public class DBHelper {
 	}
 
 	public static int[] getTIDsRange() {
-		System.out.println("getting TIDs range");
+//		System.out.println("getting TIDs range");
 		int[] range = new int[2];
 		PreparedStatement getItemsNo = null;
 		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items";

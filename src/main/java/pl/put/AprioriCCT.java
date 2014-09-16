@@ -47,7 +47,7 @@ public class AprioriCCT extends Apriori {
 				transactions = dmqs[j].getTransactions();
 				countCandidatesSupport();
 			}
-			printTree();
+//			printTree();
 			candidatesNo = generateCandidates();
 			currentDepth++;
 		}
@@ -140,8 +140,6 @@ public class AprioriCCT extends Apriori {
 			result.add(new AprioriResult());
 		}
 		findFrequentItemsets(root);
-//		AprioriResult aprioriResult = new AprioriResult();
-//		aprioriResult.addFrequentItemsets(findFrequentItemsets(root));
 		return null;
 	}
 	

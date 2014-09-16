@@ -18,17 +18,26 @@ public class CommonCounting extends CommonAlgorithm {
 	@Override
 	public List<Integer> getResult(){
 		
+		long startTime = System.nanoTime();   
+		
+		
+		/**** algorithm start ****/
+		
 		for(Dmq dmq : minimalDmq){
 			dmq.setTransactions(DBHelper.getTransactionsForDmq(dmq));
 		}
-		
 		Apriori apriori = new AprioriCC(minimalDmq);
 		List<AprioriResult> result = apriori.fastApriori();
+		
+		/**** algorithm stop ****/
 
+		
+		long estimatedTime = System.nanoTime() - startTime;
 		String fileName = PropertiesLoader.getProperty("apriori.cc.result.file");
 		FileWriter.saveToFile(fileName, false, new Date().toString());
+		FileWriter.saveToFile(fileName, true, "time: " + estimatedTime);
+		
 		for(AprioriResult aprioriResult : result){
-
 			FileWriter.saveToFile(fileName, true, aprioriResult.toString());
 		}
 		
