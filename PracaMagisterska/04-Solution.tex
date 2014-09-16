@@ -5,11 +5,16 @@
 \label{c41}
 Poniższy rozdział poświęcono przedstawieniu idei, opisu i cech zaprojektowanych algorytmów. Oba oparte są na opisanych w poprzednim rozdziale algorytmach przetwarzania zbiorów zapytań eksploracyjnych, tj. Common Counting (\cite{WojciechowskiCC}) i Common Candidate Tree (\cite{WojciechowskiCCT}). Implementacja Apriori wykorzystywana wewnątrz tych algorytmów jest zgodna z rozwiązaniem zaproponowanym przez Borgelta (\cite{Borgelt}).
 
-\section{Common Counting z wykorzystaniem drzew prefiksowych}
+
+\section{Przygotowanie danych}
 \label{c42}
+Zbiór danych, w którym poszukiwane są zbiory częste z użyciem Common Counting lub Common Candidate Tree musi spełniać kilka założeń. Krokiem wstępnym wykonania obu algorytmów jest zatem odpowiednie przygotowanie danych. Po pierwsze elementy każdej transakcji są sortowane leksykograficznie. Następnie niezbędne jest wyznaczenie zbioru elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych \(DMQ = \{dmq_1, dmq_2, \dots, dmq_n\}\). Przykładowo jeżeli relacja \(R\) posiada atrybut całkowitoliczbowy \(a\) oraz do wykonania są trzy zapytania eksploracyjne \(dmq_1=(R, 0 \leq a < 10, \emptyset, 4\%)\), \(dmq_2=(R, 5\leq a < 20, \emptyset, 2\%)\), \(dmq_3=(R, 0\leq a < 5 or 25\leq a < 30, \emptyset, 3\%)\), to w tym wypadku zbiór elementarnych predykatów selekcji danych będzie równy  \(S = \{0\leq a < 5, 5\leq a < 10, 10\leq a < 20, 25\leq a < 30\}\). Znając ten zbiór można zdefiniować \(DMQ\) zawierające rozłączne zapytania eksploracyjne. Po wykonaniu wszystkich zapytań z \(DMQ\) należy w odpowiedni sposób połączyć zebrane informacje i~zwrócić odpowiedzi na pierwotnie sformułowane zapytania. Tak przygotowany zbiór \(DMQ\) jest wejściem dla obu opracowanych algorytmów.
 
 
-
-\section{Common Candidate Tree z wykorzystaniem drzew prefiksowych}
+\section{Common Counting z wykorzystaniem drzew prefiksowych (CCP)}
 \label{c43}
 
+
+
+\section{Common Candidate Tree z wykorzystaniem drzew prefiksowych (CCTP)}
+\label{c44}
