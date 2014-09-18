@@ -17,7 +17,8 @@ public class CommonCounting extends CommonAlgorithm {
 	
 	@Override
 	public List<Integer> getResult(){
-		
+
+		System.out.println("cc> start time");
 		long startTime = System.nanoTime();   
 		
 		
@@ -37,9 +38,9 @@ public class CommonCounting extends CommonAlgorithm {
 		FileWriter.saveToFile(fileName, false, new Date().toString());
 		FileWriter.saveToFile(fileName, true, "time: " + estimatedTime);
 		
-		for(AprioriResult aprioriResult : result){
-			FileWriter.saveToFile(fileName, true, aprioriResult.toString());
-		}
+//		for(AprioriResult aprioriResult : result){
+//			FileWriter.saveToFile(fileName, true, aprioriResult.toString());
+//		}
 		
 		return null;
 	}

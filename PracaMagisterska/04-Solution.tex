@@ -10,11 +10,15 @@ Poniższy rozdział poświęcono przedstawieniu idei, opisu i cech zaprojektowan
 \label{c42}
 Zbiór danych, w którym poszukiwane są zbiory częste z użyciem Common Counting lub Common Candidate Tree musi spełniać kilka założeń. Krokiem wstępnym wykonania obu algorytmów jest zatem odpowiednie przygotowanie danych. Po pierwsze elementy każdej transakcji są sortowane leksykograficznie. Następnie niezbędne jest wyznaczenie zbioru elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych \(DMQ = \{dmq_1, dmq_2, \dots, dmq_n\}\). Przykładowo jeżeli relacja \(R\) posiada atrybut całkowitoliczbowy \(a\) oraz do wykonania są trzy zapytania eksploracyjne \(dmq_1=(R, 0 \leq a < 10, \emptyset, 4\%)\), \(dmq_2=(R, 5\leq a < 20, \emptyset, 2\%)\), \(dmq_3=(R, 0\leq a < 5 or 25\leq a < 30, \emptyset, 3\%)\), to w tym wypadku zbiór elementarnych predykatów selekcji danych będzie równy  \(S = \{0\leq a < 5, 5\leq a < 10, 10\leq a < 20, 25\leq a < 30\}\). Znając ten zbiór można zdefiniować \(DMQ\) zawierające rozłączne zapytania eksploracyjne. Po wykonaniu wszystkich zapytań z \(DMQ\) należy w odpowiedni sposób połączyć zebrane informacje i~zwrócić odpowiedzi na pierwotnie sformułowane zapytania. Tak przygotowany zbiór \(DMQ\) jest wejściem dla obu opracowanych algorytmów.
 
+\subsection{Implementacja algorytmu Apriori}
+\label{c43}
+
+Implementacja Apriori zastosowanego wewnątrz CC i CCT jest inspirowana propozycja Borgelta \cite{Borgelt}. Zastosowane zostało drzewo prefiksowe jako struktura przechowująca kandydatów,dla których ustalane jest wsparcie. Drzewo generowane jest od korzenia. Na pierwszym poziomie znajdują się wszystkie możliwe zbiory jednoelementowe. Ich liczność odpowiada liczbie różnych elementów w zbiorze wszystkich elementów występujących w przetwarzanych transakcjach. Następnie wykonywane jest ustalanie wsparcia dla każdego wierzchołka. Kolejny poziom w drzewie generowany jest tylko z wierzchołków zawierających zbiory częste. Dzięki temu znacząco zmniejsza się rozmiar wygenerowanego drzewa. Dla pierwszego poziomu wsparcie jest po prostu sumą wystąpień poszczególnych elementów w transakcjach. Dla pozostałych poziomów Wsparcie wyznaczane jest metodą rekurencyjną liczenia rekurencyjnego (RC) (ang. \textit{recursive counting}). Metoda ta działa dla każdego wierzchołka w następujący sposób: (1) przejdź do dziecka wskazywanego przez krawędź z etykietą odpowiadającą pierwszemu elementowi transakcji i przetwarzaj dla niego pozostałe elementy transakcji w ten sam sposób oraz (2) pomiń pierwszy element transakcji i przetwarzaj dla danego wierzchołka pozostałe elementy. Gdy metoda znajdzie się na poziomie odpowiadającym aktualnie dodanym kandydatom, to zwiększany jest licznik wystąpień w danym wierzchołku i nie następuje dalsze przechodzenie w głąb drzewa. Procedura ta jest sekwencyjnie powtarzana dla każdej transakcji. Dodatkowo, w celu zmniejszenia liczby analizowanych transakcji, sprawdzane jest czy liczba elementów transakcji jest wystarczająca do osiągnięcia rozważanej głębokości drzewa - jeśli nie, to taka transakcja jest pomijana. Algorytm Apriori kończy się w momencie gdy nie udało się wygenerować kandydatów dla kolejnego poziomu drzewa.
 
 \section{Common Counting z wykorzystaniem drzew prefiksowych (CCP)}
-\label{c43}
+\label{c44}
 
 
 
 \section{Common Candidate Tree z wykorzystaniem drzew prefiksowych (CCTP)}
-\label{c44}
+\label{c45}

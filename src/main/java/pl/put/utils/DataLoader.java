@@ -1,11 +1,9 @@
 package pl.put.utils;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,12 +11,12 @@ import pl.put.model.TransactionItemDB;
 
 public class DataLoader {
 	
-	public static boolean importGeneratedDataToDB(){
-		
+	public static boolean importGeneratedDataToDB(String filePath){
+		System.out.println("DataLoader> importing data");
 		List<TransactionItemDB> transactions = new ArrayList<TransactionItemDB>();
 		BufferedReader reader = null;
 		try {
-			String filePath = Paths.get(new File(".").getCanonicalPath(), PropertiesLoader.getProperty("data.path")).toString();
+			
 			reader = new BufferedReader(new FileReader(filePath));
 		
 			String line = null;

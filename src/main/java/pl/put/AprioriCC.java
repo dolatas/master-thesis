@@ -47,7 +47,11 @@ public class AprioriCC extends Apriori {
 				candidatesNo = generateCandidates();
 				currentDepth++;
 			}
-			
+
+			transactions = null;
+			items = null;
+		
+			System.out.println("cc> depth without candidates:" + currentDepth);
 			result.add(findAprioriResult());
 		}
 		
@@ -110,17 +114,19 @@ public class AprioriCC extends Apriori {
 		int candidatesNo = 0;
 		for(Node parent : trie.getNodesAtLevel(currentDepth)){
 			
-			//add labels
-			int elementPos = items.indexOf(parent.getLastElement());
-			if (elementPos != items.size() - 1){
-				for(int i = elementPos + 1; i < items.size(); i++){
-					parent.addLabel(items.get(i));
-				}
-				
-				//add children
-				for(Integer label : parent.getLabels()){
-					parent.addChildByLabel(label);
-					candidatesNo++;
+			if(((NodeCC) parent).getCounter() >= minsup){
+				//add labels
+				int elementPos = items.indexOf(parent.getLastElement());
+				if (elementPos != items.size() - 1){
+					for(int i = elementPos + 1; i < items.size(); i++){
+						parent.addLabel(items.get(i));
+					}
+					
+					//add children
+					for(Integer label : parent.getLabels()){
+						parent.addChildByLabel(label);
+						candidatesNo++;
+					}
 				}
 			}
 		}

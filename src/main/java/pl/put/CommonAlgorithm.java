@@ -12,7 +12,9 @@ public abstract class CommonAlgorithm {
 		this.minsup = Integer.parseInt(PropertiesLoader.getProperty("apriori.minsup"));
 		this.originalDmqNo = Integer.parseInt(PropertiesLoader.getProperty("apriori.dmq.size"));
 		this.originalDmqOverlaping = Integer.parseInt(PropertiesLoader.getProperty("apriori.dmq.overlaping"));
+		System.out.println("ca> generate orginal");
 		this.originalDmq = generateOriginal(minTID, maxTID);
+		System.out.println("ca> generate minimal");
 		this.minimalDmq = generateMinimal();
 	}
 	
