@@ -5,25 +5,25 @@
 \label{c11}
 
 
-Odkrywanie zbiorów częstych i generowanie na ich podstawie reguł asocjacyjnych, to problem sformułowany w kontekście analizy koszyka zakupów. Głównym celem jest szukanie prawidłowości w zachowaniu klientów supermarketów. Szybko znalazł on również zastosowanie w wielu innych dziedzinach, takich jak chociażby analiza działalności firm wysyłkowych, sklepów internetowych etc. Z wykorzystaniem znalezionych zbiorów częstych i wygenerowanych reguł dąży się do tego aby można było wnioskować (z dużym prawdopodobieństwem), że niektóre produkty współwystępują ze sobą. Informacje takie, zwłaszcza jeśli wyrażone w formie zasad, często mogą być stosowane w celu zwiększenia sprzedanych danych produktów - na przykład poprzez odpowiednie rozmieszczenie ich na półkach w supermarkecie lub na stronach katalogu wysyłkowego (umieszczenie obok siebie może zachęcić jeszcze więcej klientów do zakupu ich razem) lub poprzez bezpośrednie sugerowanie klientom produktów, którymi mogą być zainteresowani. 
+Odkrywanie zbiorów częstych i generowanie na ich podstawie reguł asocjacyjnych, to problem sformułowany w kontekście analizy koszyka zakupów. Głównym celem jest szukanie prawidłowości w zachowaniu klientów supermarketów. Szybko znalazł on również zastosowanie w wielu innych dziedzinach, takich jak chociażby analiza działalności firm wysyłkowych, sklepów internetowych etc. Z wykorzystaniem znalezionych zbiorów częstych i wygenerowanych reguł dąży się do tego, aby można było wnioskować (z dużym prawdopodobieństwem), że niektóre produkty współwystępują ze sobą. Informacje takie, zwłaszcza jeśli wyrażone w formie zasad, często mogą być stosowane w celu zwiększenia sprzedanych danych produktów - na przykład poprzez odpowiednie rozmieszczenie ich na półkach w supermarkecie lub na stronach katalogu wysyłkowego (umieszczenie obok siebie może zachęcić jeszcze więcej klientów do zakupu ich razem) lub poprzez bezpośrednie sugerowanie klientom produktów, którymi mogą być zainteresowani. Oczywistym jest, że należy szukać tylko takich reguł asocjacyjnych, które są wiarygodne i niosą ze sobą jakąś informację. Dlatego też powstały algorytmy służące do znajdywania tychże reguł oraz wskaźniki do ich oceny.
 
-Oczywistym jest, że należy szukać tylko takich reguł asocjacyjnych, które są wiarygodne i niosą ze sobą jakąś informację. Istnieją wskaźniki służące do oceny tychże reguł. Zostały one omówione bardziej szczegółowo w rozdziale 2. 
+Głównym problemem indukcji reguł asocjacyjnych jest to, że istnieje bardzo wiele możliwości. Przykładowo w zakresie produktów z supermarketu, których może być nawet kilka tysięcy, istnieją miliardy możliwych reguł. Tak ogromna ilość nie może być przetwarzana sekwencyjnie. Stąd potrzeba wydajnych algorytmów, które ograniczają przestrzeń wyszukiwania i sprawdzają jedynie podzbiór wszystkich reguł. Jednym z takich algorytmów jest Apriori zaproponowany w \cite{Agrawal}. Inne znane podejścia, które pojawiły się później, to m.in. algorytmy FP-growth (\cite{Han}) czy Dynamic Itemset Counting (\cite{Brin}). Apriori doczekało się również wielu modyfikacji. Kładły one nacisk na optymalizację czasu wykonania algorytmu przede wszystkim poprzez zmniejszenie liczby odczytów bazy danych, ulepszenie procedury generowania kandydatów lub zmiany struktury wykorzystywanej przez algorytm. Jego podstawowa wersja trzyma kandydatów w drzewie haszowym. W praktyce jednak lepsze okazały się implementacje Apriori gdzie drzewo haszowe zastąpiono znacznie prostszą strukturą drzewa prefiksowego. Powstało kilka rozwiązań wykorzystujących tę strukturę. Są to m.in. rozwiązania Borgelta (\cite{Borgelt}), Bodona (\cite{Bodon}) czy też Goethalsa (\cite{Goethals}).
 
-Głównym problemem indukcji reguł asocjacyjnych jest to, że istnieje bardzo wiele możliwości. Przykładowo w zakresie produktów z supermarketu, których może być nawet kilka tysięcy, istnieją miliardy możliwych reguł. Tak ogromna ilość nie może być przetwarzana sekwencyjnie. Dlatego potrzebne są wydajne algorytmy, które ograniczają przestrzeń wyszukiwania i sprawdzają jedynie podzbiór wszystkich reguł. Jednym z takich algorytmów jest Apriori opracowany przez \cite{Agrawal}.
 
-Podstawowy algorytm Apriori trzyma kandydatów w drzewie haszowym. W ostatnich latach zaproponowane zostały metody Common Counting (\cite{WojciechowskiCC}) oraz Common Candidate Tree (\cite{WojciechowskiCCT}). Są one wynikiem badań nad optymalizacją wykonania kilku zadań Apriori uruchomionych współbieżnie na nakładających się podzbiorach tabeli z danymi. Metody sprowadzały się do:\newline
+Prowadzone są także badania w kwestii współbieżnego wykonywania algorytmów eksploracyjnych na tym samym zbiorze danych. W ostatnich latach zaproponowane zostały metody Common Counting (\cite{WojciechowskiCC}) oraz Common Candidate Tree (\cite{WojciechowskiCCT}). Są one wynikiem eksperymentów nad optymalizacją wykonania kilku zadań Apriori uruchomionych współbieżnie na nakładających się podzbiorach tabeli z danymi. Metody sprowadzały się do:\newline
 - Integracji odczytów współdzielonych danych z dysku;\newline
 - Integracji drzew haszowych w jedno drzewo gdzie kandydaci mają kilka liczników (po jednym dla zadania eksploracji).\newline
-W praktyce jednak lepsze okazały się implementacje Apriori gdzie drzewo haszowe zastąpiono znacznie prostszą strukturą drzewa prefiksowego. Powstało kilka rozwiązań wykorzystujących tę strukturę: Borgelt, Bodon, Goethals. Jednak do tej pory nie została zaimplementowana modyfikacja Common Counting i Common Candidate Tree dla Apriori z drzewem prefiksowym i to właśnie jest celem tej pracy. 
+Udowodniono, że im większy stopień nakładania się danych tym większa przewaga tych algorytmów nad oryginalnym, sekwencyjnym rozwiązaniem. Jednakże wykorzystują one ten sam mechanizm generowania kandydatów oraz tę samą strukturę co oryginalny Apriori (\cite{Agrawal}). Do tej pory nie została zaimplementowana modyfikacja Common Counting i Common Candidate Tree dla jednej z szybszych wersji Apriori z drzewem prefiksowym i to właśnie jest celem tej pracy. 
 
 \section{Cel i zakres pracy}
 \label{c12}
 
-Tak jak wspomniano, ogólnym celem pracy jest implementacja dwóch algorytmów wykonania zbioru zapytań odkrywających zbiory częste - które dotychczas implementowane były na drzewie haszowym - z wykorzystaniem drzew prefiksowych. \newline
-Na ten ogólny cel pracy składają się następujące cele szczegółowe:
-- przedstawienie, analiza i porównanie istniejących rozwiązań dotyczących tematyki pracy
+Tak jak wspomniano, ogólnym celem pracy jest implementacja dwóch algorytmów wykonania zbioru zapytań odkrywających zbiory częste - które dotychczas implementowane były na drzewie haszowym - z wykorzystaniem drzew prefiksowych.
+
+Na ten ogólny cel pracy składają się następujące cele szczegółowe:\newline
+- przedstawienie, analiza i porównanie istniejących rozwiązań dotyczących tematyki pracy\newline
 - implementacja modyfikacji Common Counting i Common Candidate Tree dla Apriori z drzewem prefiksowym;\newline
-- przetestowanie wydajności zaimplementowanych algorytmów.\newline
+- przetestowanie wydajności zaimplementowanych algorytmów i analiza uzyskanych wyników.
 	
 \section{Struktura pracy}
 \label{c14}   
@@ -31,5 +31,5 @@ Struktura pracy jest następująca:\newline
 -- w rozdziale 2 omówiono podstawowe pojęcia i definicje wykorzystywane w pracy;\newline
 -- w rozdziale 3 przedstawiono istniejące rozwiązania i algorytmy, związane z tematem pracy;\newline
 -- w rozdziale 4 przedstawiono ideę, opis i cechy algorytmów;\newline
--- w rozdziale 5 przeanalizowano działanie algorytmów dla różnych parametrów i danych wejściowych;\newline
+-- w rozdziale 5 przeanalizowano wyniki uzyskane podczas badań działania algorytmów dla różnych parametrów i danych wejściowych;\newline
 -- w rozdziale 6 przedstawiono wnioski i uwagi do pracy.
