@@ -10,8 +10,8 @@ import pl.put.utils.PropertiesLoader;
 
 public class Main {
 
-	public static final boolean RESET_DB = true; 
-//	public static final boolean RESET_DB = false; 
+//	public static final boolean RESET_DB = true; 
+	public static final boolean RESET_DB = false; 
 	
 	public static void main(String[] args) {
 		
