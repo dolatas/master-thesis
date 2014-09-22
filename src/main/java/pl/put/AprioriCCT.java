@@ -122,50 +122,85 @@ public class AprioriCCT extends Apriori {
 	}
 	
 
-
+//	@Override
+//	public int generateCandidates(){
+//		int candidatesNo = 0;
+//		List<Integer> prefix = new ArrayList<Integer>();
+//		List<NodeCCT>  nodesWithCommonPrefix = new ArrayList<NodeCCT>();
+//			for(Node parent : trie.getNodesAtLevel(currentDepth)){
+//				NodeCCT parentCCT = (NodeCCT) parent;
+//				
+//					if(prefix.equals(parent.getPrefix())){
+//						for(NodeCCT node : nodesWithCommonPrefix){
+//							for(int j = 0; j < dmqs.length; j++){
+//								if(parentCCT.getFromQueryOnIndex(j) && parentCCT.getCounters()[j] >= dmqs[j].getMinsup()){
+//
+//									Integer labelToAdd = parent.getLastElement();
+//									int labelIndex = node.getLabels().indexOf(labelToAdd);
+//									
+//									if(labelIndex >= 0){
+//										node.setChildrenFrom(labelIndex, j);
+//										
+//									} else {
+//										node.addLabel(labelToAdd);
+//										node.addChildByLabel(labelToAdd, j);
+//									}
+//								candidatesNo++;
+//								}
+//							
+//							}
+//						}
+//						
+//						
+//					} else {
+//						prefix = parent.getPrefix();
+//						nodesWithCommonPrefix = new ArrayList<NodeCCT>();
+//					}
+//					nodesWithCommonPrefix.add(parentCCT);
+//				}
+//		return candidatesNo;
+//	}
+	
+	
+	
+	
+	//*************************** using sort
+	
 	@Override
 	public int generateCandidates(){
 		int candidatesNo = 0;
-		List<Integer> prefix = new ArrayList<Integer>();
-		List<NodeCCT>  nodesWithCommonPrefix = new ArrayList<NodeCCT>();
-//		for(int j = 0; j < dmqs.length; j++){
-//			nodesWithCommonPrefix = new ArrayList<Node>();
-//			possibleItems = new ArrayList<Integer>();
-//			for(Node parent : trie.getNodesAtLevel(currentDepth, j)){
-			for(Node parent : trie.getNodesAtLevel(currentDepth)){
-//				List<Integer>  possibleItems = new ArrayList<Integer>();
+		
+		for(int j = 0; j < dmqs.length; j++){
+			List<Integer> prefix = new ArrayList<Integer>();
+			List<NodeCCT>  nodesWithCommonPrefix = new ArrayList<NodeCCT>();
+			for(Node parent : trie.getNodesAtLevel(currentDepth, j)){
+
 				NodeCCT parentCCT = (NodeCCT) parent;
 				
-					if(prefix.equals(parent.getPrefix())){
-//						possibleItems.add(labelToAdd);
-						for(NodeCCT node : nodesWithCommonPrefix){
-							for(int j = 0; j < dmqs.length; j++){
-								if(parentCCT.getFromQueryOnIndex(j) && parentCCT.getCounters()[j] >= dmqs[j].getMinsup()){
-
-									Integer labelToAdd = parent.getLastElement();
-									int labelIndex = node.getLabels().indexOf(labelToAdd);
-									
-									if(labelIndex >= 0){
-										node.setChildrenFrom(labelIndex, j);
-										
-									} else {
-										node.addLabel(labelToAdd);
-										node.addChildByLabel(labelToAdd, j);}
-									}
-							
-								candidatesNo++;
+				if(prefix.equals(parent.getPrefix())){
+					for(NodeCCT node : nodesWithCommonPrefix){
+						if(parentCCT.getCounters()[j] >= dmqs[j].getMinsup()){
+							Integer labelToAdd = parent.getLastElement();
+							int labelIndex = node.getLabels().indexOf(labelToAdd);
+					
+							if(labelIndex >= 0){
+								node.setChildrenFrom(labelIndex, j);
+							} else {
+								node.addLabel(labelToAdd);
+								node.addChildByLabelWithOrderCheck(labelToAdd, j);
 							}
+							candidatesNo++;
 						}
-						
-						
-					} else {
-						prefix = parent.getPrefix();
-						nodesWithCommonPrefix = new ArrayList<NodeCCT>();
 					}
-					nodesWithCommonPrefix.add(parentCCT);
 				}
-//			}
-//		}
+					
+				else {
+					prefix = parent.getPrefix();
+					nodesWithCommonPrefix = new ArrayList<NodeCCT>();
+				}
+				nodesWithCommonPrefix.add(parentCCT);
+			}
+		}
 		return candidatesNo;
 	}
 

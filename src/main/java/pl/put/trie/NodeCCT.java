@@ -90,9 +90,24 @@ public class NodeCCT extends Node {
 		children.add(n);
 		return n;
 	}
+	
+	public Node addChildByLabelWithOrderCheck(Integer label, int dmqIndex) {
+		List<Integer> value = new ArrayList<Integer>();
+		value.addAll(this.value);
+		if(getLastElement() > label){
+			value.add(value.size() - 1, label);
+		} else {
+			value.add(label);
+		}
+		Node n = new NodeCCT(value, dmqNo);
+		((NodeCCT) n).setFromQueryOnIndex(dmqIndex, true);
+		children.add(n);
+		return n;
+		
+	}
+	
 	public void setChildrenFrom(int labelIndex, int dmqIndex) {
 		((NodeCCT) children.get(labelIndex)).setFromQueryOnIndex(dmqIndex, true);
 	}
-	
  
 }

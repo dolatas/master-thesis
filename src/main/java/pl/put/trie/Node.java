@@ -91,4 +91,19 @@ public abstract class Node {
 		return null;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj == null) return false;
+	    if(!(obj instanceof Node)) return false;
+	    Node other = (Node) obj;
+	    return this.value.equals(other.value);
+	}
+
+	@Override
+	public int hashCode() {
+		return value.get(0);
+	}
+	
+	
+
 }

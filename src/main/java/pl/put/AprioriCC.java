@@ -12,9 +12,7 @@ import pl.put.model.SelectionPredicate;
 import pl.put.model.Transaction;
 import pl.put.trie.Node;
 import pl.put.trie.NodeCC;
-import pl.put.trie.NodeCCT;
 import pl.put.trie.Trie;
-import pl.put.utils.DBHelper;
 
 public class AprioriCC extends Apriori {
 
@@ -76,8 +74,6 @@ public class AprioriCC extends Apriori {
 //		printTree(tries.get(0));
 //		printTree(tries.get(1));
 
-//		transactions = null;
-//		items = null;
 
 		List<AprioriResult> result = new ArrayList<AprioriResult>();
 //		 System.out.println("cc> depth without candidates:" + currentDepth);
