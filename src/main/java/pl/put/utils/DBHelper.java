@@ -149,8 +149,8 @@ public class DBHelper {
 		
 		PreparedStatement selectTransactions = null;
 		//TODO
-//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items"; 
-		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample"; 
+		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items"; 
+//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample"; 
 		try {
 			List<Transaction> transactions = new ArrayList<Transaction>();
 
@@ -199,8 +199,8 @@ public class DBHelper {
 		
 		PreparedStatement selectTransactions = null;
 		//TODO
-//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?";
-		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample WHERE id > ? AND id <= ?"; 
+		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?";
+//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample WHERE id > ? AND id <= ?"; 
 		try {
 			List<Transaction> transactions = new ArrayList<Transaction>();
 
@@ -251,8 +251,8 @@ public class DBHelper {
 
 		PreparedStatement getItemsNo = null;
 		//TODO
-//		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items) itemsNo";
-		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items_sample) itemsNo";
+		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items) itemsNo";
+//		String getItemsNoSQL = "SELECT count(*) FROM (SELECT DISTINCT item FROM transaction_items_sample) itemsNo";
 		try {
 			getItemsNo = getConnection().prepareStatement(getItemsNoSQL);
 			ResultSet rs = getItemsNo.executeQuery();
@@ -281,8 +281,8 @@ public class DBHelper {
 		int[] range = new int[2];
 		PreparedStatement getItemsNo = null;
 		//TODO
-//		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items";
-		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items_sample";
+		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items";
+//		String getItemsNoSQL = "SELECT min(id), max(id) FROM transaction_items_sample";
 		try {
 			getItemsNo = getConnection().prepareStatement(getItemsNoSQL);
 			ResultSet rs = getItemsNo.executeQuery();
@@ -312,8 +312,8 @@ public class DBHelper {
 		
 		PreparedStatement selectTransactions = null;
 		//TODO
-//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?"; 
-		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample WHERE id > ? AND id <= ?"; 
+		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items WHERE id > ? AND id <= ?"; 
+//		String selectTransactiosnSQL = "SELECT id, item FROM transaction_items_sample WHERE id > ? AND id <= ?"; 
 		try {
 			List<Transaction> transactions = new ArrayList<Transaction>();
 
