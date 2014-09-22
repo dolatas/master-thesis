@@ -3,7 +3,7 @@
 
 \section{Wstęp}
 \label{c51}
-W poniższym rozdziale opisano przebieg przeprowadzonych eksperymentów oraz przedstawiono uzyskane wyniki wraz z ich interpretacją. Algorytmy testowane były na tych samych zbiorach danych. Tworzenie tych zbiorów odbywało się z wykorzystaniem generatora przyjmującego jako parametry liczbę transakcji (np. 10 tys., 100 tys.), średnią liczbę elementów w transakcji (np. 6), liczbę wzorców do odkrycia (np. 500), średni rozmiar wzorców częstych do odkrycia (np. 3), liczbę różnych elementów występujących w transakcjach (np. 1000, 10000) oraz nazwę pliku wyjściowego. Wygenerowany plik jest importowany do bazy danych, do której odwołuje się aplikacja podczas wykonywania algorytmów. Dane w bazie składowane są w jednej tabeli w postaci par \((id transakcji, id elementu)\). Dlatego też po odczycie tej tabeli składane są transakcje wykorzystywane w dalszym przetwarzaniu. 
+W poniższym rozdziale opisano przebieg przeprowadzonych eksperymentów oraz przedstawiono uzyskane wyniki wraz z ich interpretacją. Algorytmy testowane były na tych samych zbiorach danych. Tworzenie tych zbiorów odbywało się z wykorzystaniem generatora przyjmującego jako parametry liczbę transakcji (np. 10 tys., 100 tys.), średnią liczbę elementów w transakcji (np. 6), liczbę wzorców do odkrycia (np. 500), średni rozmiar wzorców częstych do odkrycia (np. 3), liczbę różnych elementów występujących w transakcjach (np. 1000, 10000) oraz nazwę pliku wyjściowego. Wygenerowany plik jest importowany do bazy danych, do której odwołuje się aplikacja podczas wykonywania algorytmów. Dane w bazie składowane są w jednej tabeli w postaci par \((id transakcji, id elementu)\). Dlatego też po odczycie tej tabeli składane są transakcje wykorzystywane w dalszym przetwarzaniu. Zbiór zapytań \(DMQ\) generowany był przed rozpoczęciem przetwarzania. Liczba transakcji obejmująca każde zapytanie \(dmq_i\) wynosi \(|T|/|DMQ|\), gdzie \(|T|\) - liczba wszystkich transakcji, \(|DMQ|\) - liczba wszystkich zapytań eksploracyjnych. 
 
 \section{Opis infrastruktury}
 \label{c52}
@@ -11,7 +11,7 @@ Algorytmy napisane zostały w języku Java, z wykorzystaniem narzędzia Maven or
 
 \section{Wyniki}
 \label{c53}
-Poniżej zaprezentowano wyniki eksperymentów. Wszystkie uwzględnione czasy są średnią 4 dokonanych pomiarów dla dokładnie tych samych parametrów. 
+Poniżej zaprezentowano wyniki eksperymentów. Wszystkie uwzględnione czasy są średnią 4 dokonanych pomiarów dla dokładnie tych samych parametrów. Badania przeprowadzono dla dwóch zapytań eksploracyjnych z różnym poziomem nakładania się danych. Oba zapytania wykorzystywały ten sam próg wsparcia, mimo że nie jest to wymaganiem algorytmu. Jest to podyktowane chęcią możliwości lepszego zaobserwowania różnic w działaniu algorytmów niezależnie od wykorzystywanych progów dla poszczególnych zapytań. 
 
 Zbiór danych 1.\newline
 Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:firstDataSetParams}.
@@ -31,6 +31,21 @@ Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:fi
 \label{table:firstDataSetParams}
 \end{table}
 
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/chart_100_2}
+	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\)}
+	\label{fig:chart_100_2}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/chart_100_1}
+	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\)}
+	\label{fig:chart_100_1}
+\end{figure}
+
+
 Zbiór danych 2.\newline
 Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:secondDataSetParams}.
 \begin{table}[h]
@@ -48,6 +63,21 @@ Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:se
 	\caption{Parametry generatora dla drugiego testowego zbioru transakcji.}
 	\label{table:secondDataSetParams}
 \end{table}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/chart_50_2}
+	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\)}
+	\label{fig:chart_50_2}
+\end{figure}
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\linewidth]{figures/chart_50_1}
+	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\)}
+	\label{fig:chart_50_1}
+\end{figure}
+
 
 \section{Dalsze prace}
 \label{c54}
