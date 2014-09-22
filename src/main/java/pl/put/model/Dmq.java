@@ -7,7 +7,6 @@ public class Dmq {
 	private Integer fromExcluded;
 	private Integer toIncluded;
 	private int minsup;
-	private List<Transaction> transactions;
 	
 	public int getMinsup() {
 		return minsup;
@@ -30,12 +29,6 @@ public class Dmq {
 	@Override
 	public String toString() {
 		return String.format("dmq(%d, %d]", fromExcluded, toIncluded);
-	}
-	public List<Transaction> getTransactions() {
-		return transactions;
-	}
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
 	}
 	
 }

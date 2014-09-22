@@ -100,5 +100,36 @@ public class ObjectTrie<T> {
 			return getNextLevel(nodesAtLevel, levelsToGo - 1);
 		}
 	}
+	
+	public List<Node> getNodesAtLevel(int level, int dmqIndex){
+		if(level < 0){
+			return null;
+		} else if(level == 0){
+			List<Node> list = new ArrayList<Node>();
+			list.add(root);
+			return list;
+		} else if (level == 1){
+			return root.getChildren();
+		} else {
+			return getNextLevel(root.getChildren(), level - 1, dmqIndex);
+		}
+	}
+		
+	
+	private List<Node> getNextLevel(List<Node> nodes, int levelsToGo, int dmqIndex){
+		List<Node> nodesAtLevel = new ArrayList<Node>();
+		for (Node child : nodes){
+			for(Node node : child.getChildren()){
+				if(((NodeCCT) node).getFromQueryOnIndex(dmqIndex)){ 
+					nodesAtLevel.add(node);
+				}
+			}
+		}
+		if(levelsToGo == 0){
+			return nodes;
+		} else {
+			return getNextLevel(nodesAtLevel, levelsToGo - 1);
+		}
+	}
  
 }

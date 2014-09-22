@@ -1,43 +1,31 @@
 package pl.put;
 
-import java.util.Date;
 import java.util.List;
 
 import pl.put.model.AprioriResult;
 import pl.put.model.Dmq;
+import pl.put.model.SelectionPredicate;
 import pl.put.utils.DBHelper;
-import pl.put.utils.FileWriter;
-import pl.put.utils.PropertiesLoader;
 
 public class CommonCounting extends CommonAlgorithm {
-
-	public CommonCounting(int minTID, int maxTID) {
-		super(minTID, maxTID);
-	}
 	
+	public CommonCounting(Dmq[] originalDmq) {
+		super(originalDmq);
+	}
+
 	@Override
 	public List<Integer> getResult(){
 
-		System.out.println("cc> start time");
-		long startTime = System.nanoTime();   
-		
-		
 		/**** algorithm start ****/
 		
-		for(Dmq dmq : minimalDmq){
-			dmq.setTransactions(DBHelper.getTransactionsForDmq(dmq));
+		for(SelectionPredicate selectionPredicate : selectionPredicates){
+			selectionPredicate.setTransactions(DBHelper.getTransactionsForS(selectionPredicate));
 		}
-		Apriori apriori = new AprioriCC(minimalDmq);
+		Apriori apriori = new AprioriCC(originalDmq, selectionPredicates);
 		List<AprioriResult> result = apriori.fastApriori();
 		
 		/**** algorithm stop ****/
 
-		
-		long estimatedTime = System.nanoTime() - startTime;
-		String fileName = PropertiesLoader.getProperty("apriori.cc.result.file");
-		FileWriter.saveToFile(fileName, false, new Date().toString());
-		FileWriter.saveToFile(fileName, true, "time: " + estimatedTime);
-		
 //		for(AprioriResult aprioriResult : result){
 //			FileWriter.saveToFile(fileName, true, aprioriResult.toString());
 //		}

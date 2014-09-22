@@ -8,83 +8,102 @@ import java.util.TreeSet;
 import pl.put.model.AprioriResult;
 import pl.put.model.Dmq;
 import pl.put.model.Itemset;
+import pl.put.model.SelectionPredicate;
 import pl.put.model.Transaction;
 import pl.put.trie.Node;
 import pl.put.trie.NodeCC;
+import pl.put.trie.NodeCCT;
 import pl.put.trie.Trie;
+import pl.put.utils.DBHelper;
 
 public class AprioriCC extends Apriori {
 
-	public AprioriCC(Dmq[] dmqs){
+	public AprioriCC(Dmq[] dmqs, SelectionPredicate[] selectionPredicates){
 		this.dmqs = dmqs;
+		this.selectionPredicates = selectionPredicates;
+		tries = new ArrayList<Trie>();
 	}
 	
-	private Trie trie;
-	private Node root;
+	private List<Trie> tries;
+//	private Node root;
 	private int currentDepth;
-	private List<Transaction> transactions;
+//	private List<Transaction> transactions;
+//	private int minsup;
 	private List<Integer> items;
 	private Dmq[] dmqs;
-	private int minsup;
+	private int trieIndex;
+	private SelectionPredicate[] selectionPredicates;
 	
 	@Override
 	public List<AprioriResult> fastApriori(){
 
-		List<AprioriResult> result = new ArrayList<AprioriResult>();
-		
-		for(Dmq dmq : dmqs){
-			
-			transactions = dmq.getTransactions();
-			minsup = dmq.getMinsup();
-			
-			buildTree();
-			
-			int candidatesNo = items.size();
-			
-			while(candidatesNo > 0){
-				countCandidatesSupport();
-//				printTree();
-				candidatesNo = generateCandidates();
-				currentDepth++;
-			}
 
-			transactions = null;
-			items = null;
-		
-			System.out.println("cc> depth without candidates:" + currentDepth);
-			result.add(findAprioriResult());
+		Set<Integer> allItemsSet = new TreeSet<Integer>();
+		for(SelectionPredicate sp : selectionPredicates){
+			for(Transaction transaction : sp.getTransactions()){
+				for(Integer item : transaction.getItems()){
+					allItemsSet.add(item);
+				}
+			}
 		}
 		
+		items = new ArrayList<Integer>();
+		items.addAll(allItemsSet);
+		allItemsSet = null;
+		
+		//create tree for each dmq
+		for (int i = 0; i < dmqs.length; i++) {
+			tries.add(buildTree());
+		}
+
+		currentDepth++;
+		int candidatesNo = items.size();
+		items = null;
+		
+		while (candidatesNo > 0) {
+			for (SelectionPredicate s : selectionPredicates) {
+				countCandidatesSupportForSP(s);
+			}
+
+			candidatesNo = 0;
+			for (int i = 0; i < tries.size(); i++) {
+				trieIndex = i;
+				candidatesNo += generateCandidates();
+			}
+
+			currentDepth++;
+		}
+//		printTree(tries.get(0));
+//		printTree(tries.get(1));
+
+//		transactions = null;
+//		items = null;
+
+		List<AprioriResult> result = new ArrayList<AprioriResult>();
+//		 System.out.println("cc> depth without candidates:" + currentDepth);
+		result.add(findAprioriResult());
+
 		return result;
 	}
-	
+
 	@Override
-	protected void buildTree(){
-		root = new NodeCC(new ArrayList<Integer>());
-		trie = new Trie(root);
+	public Trie buildTree(){
+		Node root = new NodeCC(new ArrayList<Integer>());
+		Trie trie = new Trie(root);
 		root = trie.getRoot();
 		currentDepth = 0;
 
-		Set<Integer> allItemsSet = new TreeSet<Integer>();
-		for(Transaction transaction : transactions){
-			for(Integer item : transaction.getItems()){
-				allItemsSet.add(item);
-			}
-		}
-		items = new ArrayList<Integer>();
-		items.addAll(allItemsSet);
-		
 		root.setLabels(items);
 		for(Integer value : items){
 			root.addChildByLabel(value);
 		}
 		
-		currentDepth++;
+		return trie;
 
 	}
 	
 	@Override
-	protected void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent){
+	public void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent){
 		int elementsNo = transactionElements.size();
 		if((elementsNo + countingDepth >= currentDepth) && parent.getLabels() != null){
 			for(Integer label : parent.getLabels()){
@@ -103,31 +122,50 @@ public class AprioriCC extends Apriori {
 	
 
 	@Override
-	protected void countCandidatesSupport(){
-		for(Transaction transaction : transactions){
-			recursiveCounting(transaction.getItems(), 1, root);
+	public void countCandidatesSupport(){
+//		for(Transaction transaction : transactions){
+//			recursiveCounting(transaction.getItems(), 1, root);
+//		}
+	}
+	
+	protected void countCandidatesSupportForSP(SelectionPredicate selectionPredicate){
+		for(Transaction transaction : selectionPredicate.getTransactions()){
+			for(int i = 0; i < dmqs.length; i++){
+				if(dmqs[i].getFromExcluded() <= selectionPredicate.getFromExcluded() && dmqs[i].getToIncluded() >= selectionPredicate.getToIncluded()){
+					recursiveCounting(transaction.getItems(), 1, tries.get(i).getRoot());
+				}
+			}
 		}
 	}
+	
 
 	@Override
-	protected int generateCandidates(){
+	public int generateCandidates(){
 		int candidatesNo = 0;
-		for(Node parent : trie.getNodesAtLevel(currentDepth)){
+		List<Integer> prefix = new ArrayList<Integer>();
+		List<Node> nodesWithCommonPrefix = new ArrayList<Node>();
+		List<Integer> possibleItems = new ArrayList<Integer>();
+		
+		for(Node parent : tries.get(trieIndex).getNodesAtLevel(currentDepth)){
 			
-			if(((NodeCC) parent).getCounter() >= minsup){
-				//add labels
-				int elementPos = items.indexOf(parent.getLastElement());
-				if (elementPos != items.size() - 1){
-					for(int i = elementPos + 1; i < items.size(); i++){
-						parent.addLabel(items.get(i));
-					}
-					
-					//add children
-					for(Integer label : parent.getLabels()){
-						parent.addChildByLabel(label);
+			if(((NodeCC) parent).getCounter() >= dmqs[trieIndex].getMinsup()){
+				
+				
+				if(prefix.equals(parent.getPrefix())){
+					Integer labelToAdd = parent.getLastElement();
+					possibleItems.add(labelToAdd);
+					for(Node node : nodesWithCommonPrefix){
+						node.addLabel(labelToAdd);
+						node.addChildByLabel(labelToAdd);
 						candidatesNo++;
 					}
+				} else {
+					prefix = parent.getPrefix();
+					possibleItems = new ArrayList<Integer>();
+					nodesWithCommonPrefix = new ArrayList<Node>();
 				}
+				nodesWithCommonPrefix.add(parent);
+				
 			}
 		}
 		return candidatesNo;
@@ -136,18 +174,20 @@ public class AprioriCC extends Apriori {
 	
 
 	@Override
-	protected AprioriResult findAprioriResult() {
+	public AprioriResult findAprioriResult() {
 		AprioriResult aprioriResult = new AprioriResult();
-		aprioriResult.addFrequentItemsets(findFrequentItemsets(root));
+		for(int i = 0; i < tries.size(); i++){
+			aprioriResult.addFrequentItemsets(findFrequentItemsets(tries.get(i).getRoot(), dmqs[i].getMinsup()));
+		}
 		return aprioriResult;
 	}
 	
-	private List<Itemset> findFrequentItemsets(Node parent){
+	private List<Itemset> findFrequentItemsets(Node parent, int minsup){
 		List<Itemset> itemsets = new ArrayList<Itemset>();
 		for (Node node : parent.getChildren()){
 			if (((NodeCC) node).getCounter() >= minsup){
 				itemsets.add(new Itemset(node.getValue()));
-				itemsets.addAll(findFrequentItemsets(node));
+				itemsets.addAll(findFrequentItemsets(node, minsup));
 			}
 		}
 		return itemsets;
@@ -156,7 +196,7 @@ public class AprioriCC extends Apriori {
 	
 	
 // **** console print functions ****
-	protected void printTree(){
+	protected void printTree(Trie trie){
 		System.out.println(">>>>>>>>> TREE <<<<<<<<<< depth:" + currentDepth);
 		for(int i = 0; i < currentDepth; i++)
 			printNextLevel(trie.getNodesAtLevel(i));

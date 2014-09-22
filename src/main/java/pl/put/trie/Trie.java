@@ -35,6 +35,10 @@ public class Trie {
 		return trie.getNodesAtLevel(level);
 	}
 	
+	public List<Node> getNodesAtLevel(int level, int dmqIndex){
+		return trie.getNodesAtLevel(level, dmqIndex);
+	}
+	
 	public Node searchNode(List<Integer> values) {
 		return trie.searchNode(values);
 	}

@@ -76,10 +76,19 @@ public abstract class Node {
 	public Integer getLastElement() {
 		return value.get(value.size() - 1);
 	}
+	
+	public List<Integer> getPrefix() {
+		return value.subList(0, value.size() - 1);
+	}
 
 	@Override
 	public String toString() {
 		return value.toString();
+	}
+
+	public Node addChildByLabel(Integer label, int dmqIndex) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

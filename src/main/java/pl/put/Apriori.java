@@ -4,19 +4,20 @@ import java.util.List;
 
 import pl.put.model.AprioriResult;
 import pl.put.trie.Node;
+import pl.put.trie.Trie;
 
 public abstract class Apriori {
 
 	public abstract List<AprioriResult> fastApriori();
 
-	protected abstract void buildTree();
+	public abstract Trie buildTree();
 	
-	protected abstract void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent);
+	public abstract void recursiveCounting(List<Integer> transactionElements, int countingDepth, Node parent);
 
-	protected abstract void countCandidatesSupport();
+	public abstract void countCandidatesSupport();
 	
-	protected abstract int generateCandidates();
+	public abstract int generateCandidates();
 	
-	protected abstract AprioriResult findAprioriResult();
+	public abstract AprioriResult findAprioriResult();
 	
 }

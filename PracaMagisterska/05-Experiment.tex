@@ -9,5 +9,9 @@ W poniższym rozdziale opisano przebieg przeprowadzonych eksperymentów oraz prz
 \label{c52}
 Algorytmy napisane zostały w języku Java, z wykorzystaniem narzędzia Maven oraz środowiska programistycznego Eclipse. Dane testowe generowane były za pomocą generatora GEN (\cite{AgrawalGEN}), a następnie wczytywane do bazy PostgreSQL, z której korzystała aplikacja. Testy przeprowadzone zostały na komputerze HP Envy 14 Notebook PC, z procesorem Intel Core i5-2410M 2x2.30GHz oraz 8GB pamięci RAM, pracującym pod kontrola systemu operacyjnego Microsoft Windows 7. 
 
-\section{S2}
+\section{Wyniki}
 \label{c53}
+
+\section{Dalsze prace}
+\label{c54}
+Adaptacje algorytmu Apriori oraz algorytmy przetwarzające zbiory zapytań eksploracyjnych nadal mogą być ulepszane i optymalizowane. Jednym z możliwych rozwiązań jest próba wykorzystania Common Counting w taki sposób, że na podstawie zbioru elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych \(S\) generowane są rozłączne zapytania \(dmq_i\), dla których algorytm wykonywany jest w ten sam sposób jaki opisano w \ref{c43}. Ostatnim krokiem byłaby wówczas integracja znalezionych zbiorów częstych w celu uzyskania odpowiedzi na oryginalne zapytania ze zbioru \(DMQ\). Takie podejście zmniejszyłoby rozmiary drzew przechowujących kandydatów podczas przetwarzania. Należałoby sprawdzić czy zysk ten jest większy niż koszt operacji generowania zbioru rozłącznych zapytań \(DMQ\). 

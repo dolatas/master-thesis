@@ -4,81 +4,50 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.put.model.Dmq;
-import pl.put.utils.PropertiesLoader;
+import pl.put.model.SelectionPredicate;
 
 public abstract class CommonAlgorithm {
 
-	public CommonAlgorithm(int minTID, int maxTID) {
-		this.minsup = Integer.parseInt(PropertiesLoader.getProperty("apriori.minsup"));
-		this.originalDmqNo = Integer.parseInt(PropertiesLoader.getProperty("apriori.dmq.size"));
-		this.originalDmqOverlaping = Integer.parseInt(PropertiesLoader.getProperty("apriori.dmq.overlaping"));
-		System.out.println("ca> generate orginal");
-		this.originalDmq = generateOriginal(minTID, maxTID);
-		System.out.println("ca> generate minimal");
-		this.minimalDmq = generateMinimal();
+	public CommonAlgorithm(Dmq[] originalDmq){
+		this.originalDmq = originalDmq;
+		originalDmqNo = originalDmq.length;
+		selectionPredicates = determineMinS();
 	}
 	
-	protected Dmq[] originalDmq;
-	protected Dmq[] minimalDmq;
+	protected SelectionPredicate[] selectionPredicates;
 	private int originalDmqNo;
-	private int originalDmqOverlaping;
-	private int minsup;
+	protected Dmq[] originalDmq;
 	
-	
-	private Dmq[] generateOriginal(int minTID, int maxTID){
-		Dmq [] dmqs = new Dmq[originalDmqNo];
-		int transactionNo = maxTID - minTID + 1;
-		int dmqSize = transactionNo / originalDmqNo; 
-		int dmqOverlapSize = dmqSize * originalDmqOverlaping / 100;
-		
+	private SelectionPredicate[] determineMinS(){
+		List<SelectionPredicate> spList = new ArrayList<SelectionPredicate>();
 		for(int i = 0; i < originalDmqNo; i++){
-			Dmq dmq = new Dmq();
-			dmq.setMinsup(minsup);
-			dmq.setFromExcluded(i * dmqSize - 1 + minTID);
-			if(i < originalDmqNo - 1){
-				dmq.setToIncluded((i + 1) * dmqSize - 1 + dmqOverlapSize + minTID);
-			} else {
-				dmq.setToIncluded(maxTID);
-			}
-			dmqs[i] = dmq;
-		}
-		
-		
-		return dmqs;
-	}
-	
-	
-	private Dmq[] generateMinimal(){
-		List<Dmq> dmqs = new ArrayList<Dmq>();
-		for(int i = 0; i < originalDmqNo; i++){
-			Dmq dmq = new Dmq();
-			dmq.setMinsup(minsup);
+			SelectionPredicate selectionPredicate = new SelectionPredicate();
 			//setFrom
 			if (i == 0){
-				dmq.setFromExcluded(originalDmq[i].getFromExcluded());
+				selectionPredicate.setFromExcluded(originalDmq[i].getFromExcluded());
 			} else {
-				dmq.setFromExcluded(originalDmq[i - 1].getToIncluded());
+				selectionPredicate.setFromExcluded(originalDmq[i - 1].getToIncluded());
 			}
 			//setTo
 			if(i < originalDmqNo - 1){
-				dmq.setToIncluded(originalDmq[i + 1].getFromExcluded());
-				dmqs.add(dmq);
+				selectionPredicate.setToIncluded(originalDmq[i + 1].getFromExcluded());
+				spList.add(selectionPredicate);
 				//add overlapped part
-				dmq = new Dmq();
-				dmq.setMinsup(minsup);
-				dmq.setFromExcluded(originalDmq[i + 1].getFromExcluded());
-				dmq.setToIncluded(originalDmq[i].getToIncluded());
-				dmqs.add(dmq);
+				selectionPredicate = new SelectionPredicate();
+				selectionPredicate.setFromExcluded(originalDmq[i + 1].getFromExcluded());
+				selectionPredicate.setToIncluded(originalDmq[i].getToIncluded());
+				spList.add(selectionPredicate);
 			} else {
-				dmq.setToIncluded(originalDmq[i].getToIncluded());
-				dmqs.add(dmq);
+				selectionPredicate.setToIncluded(originalDmq[i].getToIncluded());
+				spList.add(selectionPredicate);
 			}
 			
 		}
 		
-		Dmq[] dmqsA = dmqs.toArray(new Dmq[dmqs.size()]);
-		return dmqsA;
+		SelectionPredicate[] spA = spList.toArray(new SelectionPredicate[spList.size()]);
+		return spA;
 	}
+	
 	
 	public abstract List<Integer> getResult();
 }
