@@ -11,10 +11,9 @@ Algorytmy napisane zostały w języku Java, z wykorzystaniem narzędzia Maven or
 
 \section{Wyniki}
 \label{c53}
-Poniżej zaprezentowano wyniki eksperymentów. Wszystkie uwzględnione czasy są średnią 4 dokonanych pomiarów dla dokładnie tych samych parametrów. Badania przeprowadzono dla dwóch zapytań eksploracyjnych z różnym poziomem nakładania się danych. Oba zapytania wykorzystywały ten sam próg wsparcia, mimo że nie jest to wymaganiem algorytmu. Jest to podyktowane chęcią możliwości lepszego zaobserwowania różnic w działaniu algorytmów niezależnie od wykorzystywanych progów dla poszczególnych zapytań. 
+Poniżej zaprezentowano wyniki eksperymentów. Wszystkie uwzględnione czasy są średnią 4 dokonanych pomiarów dla dokładnie tych samych parametrów. Badania przeprowadzono dla dwóch zapytań eksploracyjnych z różnym poziomem nakładania się danych. Oba zapytania wykorzystywały ten sam próg wsparcia, mimo że nie jest to wymaganiem algorytmu. Jest to podyktowane chęcią możliwości lepszego zaobserwowania różnic w działaniu algorytmów niezależnie od wykorzystywanych progów dla poszczególnych zapytań. Algorytmy uwzględniane w wynikach to Common Counting z wykorzystaniem drzew prefiksowych (CCP), Common Candidate z wykorzystaniem drzew prefiksowych (CCTP) oraz sekwencyjnie wykonywana adaptacja algorytmu Apriori (SEQ) zgodna z tą zastosowaną wewnątrz CCP i CCTP.
 
-Zbiór danych 1.\newline
-Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:firstDataSetParams}.
+Zbiór danych 1. Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:firstDataSetParams}.
 \begin{table}[h]
 \begin{center}
 	\begin{tabular}{| l | c |}
@@ -34,20 +33,22 @@ Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:fi
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/chart_100_2}
-	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\)}
+	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\%\)}
 	\label{fig:chart_100_2}
 \end{figure}
+
+Na wykresie \ref{fig:chart_100_2} zestawione czasy trwania poszczególnych algorytmów wykonywanych na pierwszym zbiorze danych z różnymi stopniami nakładania się. Przyjęta wartość \(minsup\) dla wszystkich zapytań wynosiła 2\%. Jak widać na wykresie w przypadku braku nakładania się zapytań uzyskane czasy były do siebie bardzo zbliżone. Wraz ze wzrostem stopnia nakładania się uwidaczniały się różnice w czasach wykonania algorytmów. Wykonanie sekwencyjne cały czas utrzymywało się na niemalże takim samym poziomie. Jest to związane z podobną liczbą operacji wykonywaną w trakcie działania algorytmu. W przypadku CCP i CCTP wraz ze wzrostem nakładania zwiększała się współbieżność. W przypadku CCTP skrócenie czasu następuje szybciej niż ma to miejsce dla CCP. Jednakże dla CCP także zaobserwowany został stały spadek czasu wykonania. Można powiedzieć, że dla tego przypadku algorytm CCTP okazał się zdecydowanie najlepszy, a także zastosowanie CCP zamiast SEQ skutkowało krótszym czasem udzielenie odpowiedzi na zadane zapytania eksploracyjne.
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/chart_100_1}
-	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\)}
+	\caption{Wykres dla pierwszego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\%\)}
 	\label{fig:chart_100_1}
 \end{figure}
+Drugi rozważany przypadek na pierwszym zbiorze danych został przedstawiony na wykresie~\ref{fig:chart_100_1}. Przyjęto \(minsup\) ma poziomie 1\%. Mniejsza wartość progu minimalnego wsparcia przekłada się na większą liczbę zbiorów częstych odkrywanych w trakcie wykonań algorytmów, stąd też wydłużenie czasów wykonania. W przypadku wykonania sekwencyjnego po raz kolejny widoczny jest brak wpływu nakładania się zapytań eksploracyjnych. Podobnie jak w pierwszym analizowanym przykładzie zachowuje się algorytm Common Counting. Widoczne jest skracanie czasu wykonania wraz ze wzrostem nakładania się zapytań. Jest to zależność liniowa i mimo, że przyspieszenie nie jest bardzo znaczące, to po raz kolejny CCP działa szybciej niż SEQ. Ciekawa sytuacja została zaobserwowana dla Common Candidate Tree. Znowu widoczny jest stały, liniowy spadek czasu wykonania, ale tym razem algorytm dla większości rozważanych przypadków nakładania się \(dmd\) działa wolniej. Jest to zapewne spowodowane koniecznością sprawdzania kolejności (i sortowania jeśli jest to niezbędne) elementów w danym wierzchołku (problem ten opisany został w \ref{c46}). Nie było to widoczne dla \(minsup = 2\%\) ze względu na mniejszą liczbę zbiorów częstych na każdym poziomie drzewa, co ma bezpośrednie przełożenie na liczbę kandydatów na kolejnym poziomie, a więc liczbę dodawanych do drzewa wierzchołków. Mimo to dla dużej współbieżności obserwowany jest zysk względem SEQ. 
 
 
-Zbiór danych 2.\newline
-Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:secondDataSetParams}.
+Zbiór danych 2. Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:secondDataSetParams}. 
 \begin{table}[h]
 	\begin{center}
 		\begin{tabular}{| l | c |}
@@ -67,20 +68,20 @@ Parametry generatora dla drugiego zbioru danych przedstawia tabela \ref{table:se
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/chart_50_2}
-	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\)}
+	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 2\%\)}
 	\label{fig:chart_50_2}
 \end{figure}
+Wykres \ref{fig:chart_50_2} obrazuje czasy wykonania algorytmów dla mniejszego z wygenerowanych zbiorów danych, na których przeprowadzane były testy. Podobnie jak miało to miejsce w uprzednio opisanych przypadkach czasy wykonania SEQ są niemalże liniowe. Zaobserwowane drobne różnice wynikają prawdopodobnie z tego, że zapytania odnoszą się do różnych podzbiorów zbioru danych, a także wpływem chwilowych różnic w działaniu środowiska testowego. Patrząc na wyniki uzyskane przez CCP o CCTP okazuje się, że są one bardzo zbliżone. Po raz kolejny czas wykonania maleje szybciej dla Common Candidate Tree niż dla Common Counting. Jednakże dla przyjętych dla tej obserwacji parametrów ciężko jednoznacznie wskazać algorytm lepszy, aczkolwiek oba są szybsze od algorytmu sekwencyjnego. 
 
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\linewidth]{figures/chart_50_1}
-	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\)}
+	\caption{Wykres dla drugiego zbioru danych dla dwóch zapytań \(dmq\) z różnym stopnieniem nakładania się i \(minsup = 1\%\)}
 	\label{fig:chart_50_1}
 \end{figure}
+Na wykresie \ref{fig:chart_50_1} zaprezentowano wyniki uzyskane dla drugiego zbioru danych przy założeniu, że próg minimalnego wsparcia wynosi \(1\%\). Potwierdza on niezależność wykonania sekwencyjnego względem stopnia nakładania się zapytań \(dmq_i\). Obserwowane rezultaty dla CCP i CCTP przypominają te uzyskane dla pierwszego zbioru danych i \(minsup = 1\%\). Widoczny jest dłuższy czas wykonania CCTP, w stosunku do SEQ i CCP, dla zapytań nie nakładających się lub małego stopnia nakładania. Powodem jest tak jak poprzednio konieczność wykonywania większej ilość sprawdzeń kolejności elementów w wierzchołku (i ewentualnych sortowań). Nie zmienia to faktu, że widoczny jest stały spadek czasu wykonania wraz ze wzrostem współbieżności. Z kolei Common Counting potwierdza swoją przewagę nad wykonaniem sekwencyjnym oraz fakt, że zwiększanie stopnia nakładania się zapytań działa na rzecz skrócenia (proporcjonalnie do zwiększania się nakładania) przetwarzania \(DMQ\) tym algorytmem. 
 
-
-\section{Dalsze prace}
+\section{Porównanie CCP i CCTP z CC i CCT}
 \label{c54}
-Adaptacje algorytmu Apriori oraz algorytmy przetwarzające zbiory zapytań eksploracyjnych nadal mogą być ulepszane i optymalizowane. Jednym z możliwych rozwiązań jest próba wykorzystania Common Counting w taki sposób, że na podstawie zbioru elementarnych predykatów selekcji danych dla zbioru zapytań eksploracyjnych \(S\) generowane są rozłączne zapytania \(dmq_i\), dla których algorytm wykonywany jest w ten sam sposób jaki opisano w \ref{c43}. Ostatnim krokiem byłaby wówczas integracja znalezionych zbiorów częstych w celu uzyskania odpowiedzi na oryginalne zapytania ze zbioru \(DMQ\). Takie podejście zmniejszyłoby rozmiary drzew przechowujących kandydatów podczas przetwarzania. Należałoby sprawdzić czy zysk ten jest większy niż koszt operacji generowania zbioru rozłącznych zapytań \(DMQ\). 
+Powołując się na wyniki uzyskane w \cite{WojciechowskiCC} oraz \cite{WojciechowskiCCT} można stwierdzić, że zastosowanie Common Counting wykorzystującego struktury prefiksowe daje podobny efekt jak w przypadku drzew haszowych. Efektem tym jest stały wzrost szybkości przetwarzania proporcjonalny do stopnia nakładania się danych. Nieco inaczej rzecz ma się dla Common Candidate Tree. Po zmianie drzewa haszowego na prefiksowe dla algorytmu nadal obserwowany jest liniowy (szybszy niż dla CC) spadek czasu wykonania. Niestety w przypadkach gdy na każdym poziomie drzewa generowanych jest dużo kandydatów (np. stosunkowo małe \(minsup\)) i nie występuje duże nakładanie się zapytań, to algorytm ten traci swoją przewagę. Jest to przewaga CCT (\cite{WojciechowskiCCT}), gdyż dla drzewa haszowego kolejność dodawania wierzchołków nie ma wpływu na przetwarzanie.
 
-Innym zagadnieniem jest problem optymalizacji generowania kandydatów dla CCTP. Sortowanie wartości podczas dodawania jest czasochłonne, mimo że porównywane są jedynie dwie wartości zbioru elementów, a nie cała lista wartości. Mimo prób zastosowania innych struktur (m.in. zbioru czy też drzew haszowych) podczas tej operacji nie udało się uzyskać lepszego wyniku niż dla ostatecznie zastosowanego rozwiązania. 
