@@ -4,30 +4,30 @@
 \section{Wstęp}
 \label{c21}
 
-W poniższym rozdziale omówiono podstawowe pojęcia i definicje wykorzystywane w pracy. 
+W poniższym rozdziale przedstawiono podstawowe pojęcia i definicje wykorzystywane w pracy. Związane są one z omawianym tematem. Na początku opisano terminy niezbędne dla sformułowania problemu. Ostatnie dwa pojęcia są natomiast kluczowe dla rozważanego w pracy problemu badawczego.
 
 \section{Lista pojęć i definicji}
 \label{c22}
 
 \subsection{Transakcja i element transakcji}
 \label{c221}
-Danymi wejściowymi dla odkrywania zbiorów częstych i reguł asocjacyjnych jest zbiór transakcji zdefiniowanych na zbiorze elementów. Tymi elementami mogą być produkty w sklepie, usługi, książki etc. Ważne jest, aby te elementy można było w łatwy sposób od siebie odróżnić. Jeśli \( I = \{ i_1, i_2, \cdots, i_n \}\)  (ang. \textit {item base} ), to zbiór wszystkich możliwych elementów, to dowolny niepusty podzbiór X zbioru \(X\subseteq I\) nazywamy transakcją (ang. \textit{itemset}). Natomiast zbiór elementów o mocy \textit{k}, to taki zbiór, który posiada dokładnie k elementów (ang. \textit{k-itemset}). 
+Danymi wejściowymi dla odkrywania zbiorów częstych i reguł asocjacyjnych jest zbiór transakcji zdefiniowanych na zbiorze elementów. Tymi elementami mogą być produkty w sklepie, usługi, książki etc. Ważne jest, aby te elementy można było w łatwy sposób od siebie odróżnić. Jeśli \( I = \{ i_1, i_2, \cdots, i_n \}\)  (ang. \textit {item base} ), to zbiór wszystkich możliwych elementów, to dowolny niepusty podzbiór X zbioru \(X\subseteq I\) nazywamy zbiorem elementów (ang. \textit{itemset}). Natomiast zbiór elementów o mocy \textit{k}, to taki zbiór, który posiada dokładnie k elementów (ang. \textit{k-itemset}). 
 
-Transakcja jest zatem przykładowym zbiorem elementów, np. zbiorem produktów, które zostały kupione przez danego klienta. Jako że transakcje mogą się powtarzać (może istnieć kilku klientów, którzy kupili dokładnie takie same produkty), to nie ma możliwości żeby zamodelować wszystkie możliwe transakcje (koszyki). Wynika to z tego, że elementy w zbiorze nie mogą się powtarzać. Problem ten znalazł kilka rozwiązań. Należy do nich zamodelowanie wszystkich transakcji jako multizbioru (uogólnienie pojęcia zbioru, w którym w odróżnieniu od klasycznych zbiorów jeden element może występować wiele razy) albo jako wektora (elementy na różnych pozycjach mogą być takie same, ale wyróżnia je położenie). Innym - choć podobnym do wspomnianego wyżej zastosowania wektora - rozwiązaniem jest rozszerzenie każdej transakcji o unikalny identyfikator. Kolejną możliwością jest wykorzystanie zbioru unikalnych transakcji, z tą różnicą, że do każdej transakcji przypisany jest licznik mający za zadanie zliczanie wystąpień.
+Transakcja jest natomiast przykładowym zbiorem elementów, np. zbiorem produktów, które zostały kupione przez danego klienta. Jako że transakcje mogą się powtarzać (może istnieć kilku klientów, którzy kupili dokładnie takie same produkty) każda transakcja w bazie danych ma przypisany unikalny identyfikator \(TID\). Dzięki temu nie ma problemu występowania duplikatów, pomimo tego, że mogą występować transakcje zawierające ten sam zestaw elementów. 
 
 Należy także zwrócić uwagę, że w większości rozważanych przypadków nie są znane wszystkie elementy, jakie mogą znaleźć się w zbiorze \(I\). Przyjmuje się wówczas, że ten zbiór jest sumą elementów występujących we wszystkich transakcjach.
 
 \subsection{Reguła asocjacyjna}
 \label{c222}
-Reguła asocjacyjna jest implikacją, która daje możliwość przewidywania jednoczesnego wystąpienia dwóch zjawisk i zachowań, współzależnych od siebie. Innymi słowy jest to schemat, pozwalający - z określonym prawdopodobieństwem - założyć, że jeśli nastąpiło zdarzenie A, to nastąpi również zdarzenie B. W kontekście problemu koszyka zakupów sprowadza się do reguł w stylu: \textit{Jeżeli klient kupił pieluszki, to (z określonym prawdopodobieństwem) kupi też piwo.}
+Reguła asocjacyjna jest implikacją, która daje możliwość przewidywania jednoczesnego wystąpienia dwóch zjawisk i zachowań, współzależnych od siebie. Innymi słowy jest to schemat, pozwalający - z określonym prawdopodobieństwem - założyć, że jeśli nastąpiło zdarzenie A, to nastąpi również zdarzenie B. Reguła może zostać wyrażona w postaci \(R = "X\rightarrow Y"\) (gdzie \(X\) i \(Y\) to zbiory elementów). W kontekście problemu koszyka zakupów sprowadza się do reguł w stylu: \textit{Jeżeli klient kupił pieluszki, to (z określonym prawdopodobieństwem) kupi też piwo.} 
 
-\subsection{Wsparcie transakcji}
+\subsection{Wsparcie zbioru elementów}
 \label{c223}
-Jeśli \(T\) oznacza jedną z transakcji w zbiorze wszystkich transakcji \(D\), to (bezwzględne) wsparcie tej transakcji jest równe \(U\) - liczbie wystąpień \(T\) w zbiorze \(D\). Wsparcie względne jest to z kolei procent (lub ułamek) transakcji w zbiorze \(D\), które zawierają \(T\). Obliczamy ze wzoru \[sup_{rel}(T)=\nolinebreak\frac{|U|}{|D|}*100\%\]. Dla algorytmu Apriori określa się próg minimalnego wsparcia \(minsup\), który również może być wyrażony w dwojakiej postaci - jako liczba wystąpień lub procent wszystkich transakcji. W poszukiwaniu zbiorów częstych interesujące są tylko te reguły, dla których \(sup(T) \geq minsup \), gdzie \(sup(T)\), to przyjęty w pracy sposób zapisu wsparcia transakcji \(T\) w rozważanym zbiorze transakcji \(D\).
+Jeśli \(X\) oznacza dowolny podzbiór \(I\), to (bezwzględne) wsparcie tego zbioru jest równe \(U\) - liczbie transakcji \(T\) w bazie danych transakcji \(D\), które zawierają wszystkie elementy danego zbioru \(X\). Wsparcie względne jest to z kolei procent (lub ułamek) transakcji w \(D\), które zawierają \(X\). Obliczamy ze wzoru \[sup_{rel}(T)=\nolinebreak\frac{|U|}{|D|}*100\%\] Dla algorytmu Apriori określa się próg minimalnego wsparcia \(minsup\), który również może być wyrażony w dwojakiej postaci - jako liczba wystąpień lub procent wszystkich transakcji. W poszukiwaniu zbiorów częstych interesujące są tylko te reguły, dla których \(sup(T) \geq minsup \), gdzie \(sup(T)\), to przyjęty w pracy sposób zapisu wsparcia zbioru elementów.
 
 \subsection{Ufność reguły asocjacyjnej}
 \label{c224}
-Ufność reguły asocjacyjnej jest miarą jakości danej reguły. Miara ta została przedstawiona przez autorów algorytmu Apriori \cite{Agrawal1994}. Dla reguły asocjacyjnej postaci \(R = "X\rightarrow Y"\) (gdzie \(X\) i \(Y\) to zbiory elementów) ufność wyraża się jako stosunek wsparcia sumy wszystkich elementów występujących w regule (w tym przypadku \(sup(X \cup Y)\)) do wsparcia poprzednika reguły (tutaj \(sup(X)\)). 
+Ufność reguły asocjacyjnej jest miarą jakości danej reguły. Miara ta została przedstawiona przez autorów algorytmu Apriori \cite{Agrawal}. Dla reguły asocjacyjnej postaci \(R = "X\rightarrow Y"\) ufność wyraża się jako stosunek wsparcia sumy wszystkich elementów występujących w regule (w tym przypadku \(sup(X \cup Y)\)) do wsparcia poprzednika reguły (tutaj \(sup(X)\)). 
 \[conf(R) = \frac{sup(X \cup Y)}{sup(X)}\]
 Należy dodać, że nie ma znaczenia czy wykorzystywane jest wsparcie absolutne czy relatywne. Istotne jest natomiast to, aby w zarówno dla licznika i mianownika wykorzystany był ten sam typ wsparcia.
 Z powyższego wzoru wynika, że ufność reguły asocjacyjnej, to stosunek liczby przypadków, w których jest ona poprawna, do wszystkich przypadków gdzie mogłaby zostać zastosowana.
@@ -35,7 +35,8 @@ Przykład: \(R = wino \wedge chleb \rightarrow ser\) - jeśli klient kupuje wino
 
 \subsection{Wsparcie reguły asocjacyjnej}
 \label{c225}
-Wsparcie reguły asocjacyjnej postaci \(A \cup B \rightarrow C\) odpowiada wsparciu zbioru \(S = \{A, B, C\}\) (\cite{Agrawal}).Miara ta informuje o tym jak często dana reguła jest prawidłowa. Nieco odmienna definicja została przedstawiona i wykorzystana w \cite{Borgelt}. Różnica polega na tym, że wsparcie wyrażone jest jako liczba przypadków, w których reguła jest stosowalna. Zatem dla powyżej postaci byłoby to \(S = \{A, B\}\), nawet jeśli reguła może okazać się fałszywa. 
+Wsparcie reguły asocjacyjnej postaci \(R = "X\rightarrow Y"\) odpowiada wsparciu sumy zbiorów \(X\) i \(Y\) (\cite{Agrawal}). Miara ta informuje o tym jak często dana reguła jest prawidłowa. Nieco odmienna definicja została przedstawiona i wykorzystana w \cite{Borgelt}. Różnica polega na tym, że wartość ta wyrażona jest jako liczba przypadków, w których reguła jest stosowalna (nawet jeśli reguła może okazać się fałszywa). Zatem dla powyżej postaci byłoby to wsparcie zbioru \(X\). 
+
 Wparcie może być stosowane do filtrowania. Dla ustalonego \(minsup\) szuka się tylko takich reguł, których wsparcie jest nie mniejsze od \(minsup\). Oznacza to, że interesujące są tylko te reguły, które wystąpiły co najmniej daną liczbę razy.
 W algorytmach wyszukiwania reguł asocjacyjnych stosuje się progi minimalnego wsparcia oraz minimalnej ufności. Dzięki temu w otrzymanych wynikach nie są uwzględnione mało wartościowe reguły.
 
@@ -45,16 +46,15 @@ Zbiorem częstym nazywamy taki niepusty podzbiór zbioru \(I\), dla którego wsp
 
 \subsection{Zbiór domknięty}
 \label{c227}
-Zbiorem domkniętym nazywamy taki zbiór częsty, dla którego nie istnieje żaden nadzbiór mający dokładnie takie samo wsparcie.
+Zbiorem domkniętym nazywamy taki zbiór częsty, dla którego nie istnieje żaden nadzbiór właściwy mający dokładnie takie samo wsparcie.
 
 \subsection{Zbiór maksymalny}
 \label{c228}
-Zbiorem maksymalnym nazywamy taki zbiór częsty, dla którego nie istnieje żaden nadzbiór, który byłby zbiorem częstym.
+Zbiorem maksymalnym nazywamy taki zbiór częsty, dla którego nie istnieje żaden nadzbiór właściwy, który byłby zbiorem częstym.
 
 \subsection{Zapytanie eksploracyjne}
 \label{c229}
-Zapytanie eksploracyjne jest uporządkowaną piątkę \(dmq = (R, a, \Sigma, \Phi, minsup) \), gdzie \(R\) - relacja bazy danych, \(a\) - atrybut relacji \(R\), \(\Sigma\) - wyrażenie warunkowe dotyczące atrybutów \(R\) nazywane predykatem selekcji danych, \(\Phi\) - wyrażenie warunkowe dotyczące odkrywanych zbiorów częstych nazywane predykatem selekcji wzorców, \(minsup\) - próg minimalnego wsparcia. Wynikiem zapytania eksploracyjnego są zbiory częste odkryte w \(\pi _a \sigma _\Sigma R \), które spełniają predykat \(\Phi\) i posiadają \(wsparcie \geq minsup\) (\(\pi\) - relacyjna operacja projekcji, \(\sigma\) - relacyjna operacja selekcji).
-
+Zapytanie eksploracyjne jest uporządkowaną piątką \(dmq = (R, a, \Sigma, \Phi, minsup) \), gdzie \(R\) - relacja bazy danych, \(a\) - atrybut relacji \(R\), \(\Sigma\) - wyrażenie warunkowe dotyczące atrybutów \(R\) nazywane predykatem selekcji danych, \(\Phi\) - wyrażenie warunkowe dotyczące odkrywanych zbiorów częstych nazywane predykatem selekcji wzorców, \(minsup\) - próg minimalnego wsparcia. Wynikiem zapytania eksploracyjnego są zbiory częste odkryte w \(\pi _a \sigma _\Sigma R \), które spełniają predykat \(\Phi\) i posiadają \(wsparcie \geq minsup\) (\(\pi\) - relacyjna operacja projekcji, \(\sigma\) - relacyjna operacja selekcji).
 
 \subsection{Zbiór elementarnych predykatów selekcji danych}
 \label{c2210}
