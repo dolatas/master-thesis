@@ -13,6 +13,7 @@
 \ppsupervisor{Dr inż. Marek Wojciechowski} % Your supervisor comes here.
 \ppyear{2014}                                         % Year of final submission (not graduation!)
 
+
 \begin{document}
 
 % Front matter starts here
@@ -30,7 +31,11 @@
 
 % Table of contents.
 \pagenumbering{Roman}\pagestyle{ppfcmthesis}%
-\tableofcontents* \cleardoublepage%
+\begingroup 
+\renewcommand{\vspace}[2]{}% Gobble 2 arguments after \vspace
+\tableofcontents* 
+\endgroup
+\cleardoublepage%
 
 % Main content of your thesis starts here.
 \mainmatter%
@@ -44,7 +49,6 @@
 % All appendices and extra material, if you have any.
 \cleardoublepage\appendix%
 \input{A-Appendix.tex}
-
 % Bibliography (books, articles) starts here.
 \bibliographystyle{alpha}{\raggedright\sloppy\small\bibliography{bibliography}}
 
